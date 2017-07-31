@@ -1,0 +1,10 @@
+.navbar button {
+	background: #fff;
+	border: 1px solid #aaa;
+	padding: 5px;
+}
+
+.navbar button:hover {
+	border: 1px solid #000;
+	cursor: pointer;
+}
