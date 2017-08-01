@@ -10,27 +10,27 @@ class SampleRoute {
 			user: "test",
 			password: "test",
 			server: "localhost",
-			database: "CardGame"
+			database: "CardGame",
+			port: 1858
 		};
 
 		this.app.get("/sample", (req, res) => {
 			sql.connect(config, err => {
 				if (err) {
 					res.status(500).send(err);
+					sql.close();
 				}
 
 				new sql.Request().query("select * from [dbo].[User]", (err, result) => {
-					res.send(result);
+					res.json(result.recordset[0]);
+					sql.close();
 				});
 			});
 
 			sql.on("error", err => {
 				res.status(500).send(err);
+				sql.close();
 			});
-		});
-
-		this.app.get("/sample-ok", (req, res) => {
-			res.json({ UnopenedCardPacks: 1 });
 		});
 	}
 }
