@@ -1,0 +1,122 @@
+.add-card-type-header {
+	border-bottom: 3px solid #ccc;
+	width: 100%;
+}
+
+.add-card-type-title {
+	display: inline-block;
+	padding-left: 5%;
+	width: 70%;
+}
+
+.add-card-type-buttons {
+	display: inline-block;
+	width: 24%;
+}
+
+.add-card-type-content {
+	border: 1px solid black;
+	float: left;
+	width: 100%;
+}
+
+/*Card View*/
+.card-type-view-container {
+	border: 1px solid red;
+	display: inline-block;
+	float: left;
+	margin: 80px 0 80px 0;
+	width: 60%;
+	height: 100%;
+}
+
+.card-type-view {
+	background: #ccc;
+	position: relative;
+	width: 50%;
+	height: 500px;
+	margin: 0 auto;
+}
+
+.card-image {
+	background: yellow;
+	border-radius: 50%;
+	margin: 0 auto;
+	position: relative;
+	width: 200px;
+	height: 200px;
+	top: 15%;
+}
+
+.card-cost {
+	border: 1px solid blue;
+	border-radius: 50%;
+	position: absolute;
+	text-align: center;
+	line-height: 50px;
+	width: 50px;
+	height: 50px;
+	left: -25px;
+	top: -25px;
+}
+
+.card-damage {
+	border: 1px solid red;
+	border-radius: 50%;
+	position: absolute;
+	text-align: center;
+	line-height: 50px;
+	width: 50px;
+	height: 50px;
+	right: -25px;
+	bottom: -25px;
+}
+
+.card-health {
+	border: 1px solid green;
+	border-radius: 50%;
+	position: absolute;
+	text-align: center;
+	line-height: 50px;
+	width: 50px;
+	height: 50px;
+	left: -25px;
+	bottom: -25px;
+}
+
+.card-name {
+	background: yellow;
+	margin: auto auto;
+	position: absolute;
+	width: 300px;
+	left: 25%;
+	top: 75%;
+}
+
+.card-name h2 {
+	text-align: center;
+}
+
+/*Form*/
+.card-type-form {
+	border: 1px solid green;
+	display: inline-block;
+	float: left;
+	margin: 10px 0 10px 0;
+	width: 39%;
+}
+
+.card-type-form > form > label {
+	border: 1px solid yellow;
+	float: left;
+	margin: 5px 10px 5px 0;
+	width: 40%;
+}
+
+.card-type-form > form > input {
+	border: 1px solid blue;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width: 58%;
+}
+
