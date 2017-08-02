@@ -1,0 +1,6 @@
+.card-pack{
+    width: 145px;
+    height: 215px;
+    background: url("../CP.PNG") no-repeat;
+    background-size: contain;
+}

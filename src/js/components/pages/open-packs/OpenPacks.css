@@ -1,0 +1,66 @@
+.open-packs-container .header {
+    border-bottom: 3px solid #ccc;
+    width: 100%;
+}
+
+.open-packs-container .title {
+    display: inline-block;
+    padding-left: 5%;
+    width: 70%;
+}
+
+.open-packs-container .button {
+    display: inline-block;
+    width: 24%;
+}
+
+.open-packs-container .secondary-container{
+    display: inline-block;
+    height: 750px;
+    margin-top: 50px;
+}
+
+.open-packs-container .grid{
+    border: 1px solid dimgrey;
+    width: 13%;
+    float: left;
+    margin-left: 300px;
+    position: relative;
+    text-align: center;
+}
+
+.open-packs-container .open-packs-zone{
+    //border: 1px solid red;
+    width: 720px;
+    float: right;
+    margin-right: 400px;
+    background: url("circle.png") no-repeat;
+    background-size: contain;
+    position: relative;
+}
+
+.open-packs-container .pack-number-div{
+    bottom: 0;
+    position: absolute;
+    padding-left: 100px;
+    font-size: 35px;
+    padding-bottom: 5px;
+}
+
+.open-packs-container .plus{
+    font-family: Arial, serif;
+    display: inline;
+}
+
+.open-packs-container .pack-number{
+    display: inline;
+}
+
+.open-packs-container .centered-card-pack{
+    position: absolute;
+    width: 150px;
+    height: 220px;
+    border: 2px solid darkred;
+    top: 255px;
+    left: 290px;
+}

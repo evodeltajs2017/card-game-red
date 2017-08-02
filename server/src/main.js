@@ -8,6 +8,10 @@ const SampleRoute = require("./routes/sample/SampleRoute");
 const sampleRoute = new SampleRoute(app);
 sampleRoute.initialize();
 
+const GetNumberOfPacksRoute = require("./routes/open-packs/GetNumberOfPacksRoute");
+const noPacksRoute = new GetNumberOfPacksRoute(app);
+noPacksRoute.initialize();
+
 app.listen(3000, function() {
 	console.log("Example app listening on port 3000!");
 });
