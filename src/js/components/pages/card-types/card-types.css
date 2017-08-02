@@ -1,0 +1,50 @@
+.card-types {
+	padding: 64px;
+}
+
+.card-types .header {
+	border-bottom-width: 2px;
+	border-bottom-color: black;
+	border-bottom-style: solid;
+	text-align: center;
+	display: flex;
+	width: 100%;
+}
+
+.card-types .search {
+	position: absolute;
+	right: 64px;
+	margin-top: 30px;
+}
+
+.card-types .content {
+	padding: 32px;
+	width: 100%;
+}
+
+.card-types table, .card-types td, .card-types th {
+	border: 2px solid #ddd;
+	text-align: center;
+}
+
+.card-types table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.card-types button {
+	margin: 4px;
+}
+
+.card-types .pages {
+	padding: 16px;
+}
+
+.card-types .pageButtons {
+	float: right;
+}
+
+.card-types .itemsPerPage {
+	display: inline-block;
+	margin: 4px;
+}
+
