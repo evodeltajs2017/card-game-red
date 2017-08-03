@@ -5,8 +5,8 @@ class GetAllCardTypesRoute {
 	}
 	
 	initialize() {
-		configureConnection();
-		getAllcardTypesFromDatabase();
+		this.configureConnection();
+		this.getAllcardTypesFromDatabase();
 	}
 	
 	configureConnection() {
@@ -21,7 +21,7 @@ class GetAllCardTypesRoute {
 	}
 	
 	getAllcardTypesFromDatabase() {
-		const config = configureConnection();
+		const config = this.configureConnection();
 		
 		this.app.get("/view-card-types", (req, res) => {
 			sql.connect(config, err => {
@@ -30,7 +30,7 @@ class GetAllCardTypesRoute {
 					sql.close();
 				}
 				new sql.Request().query("select * from [dbo].[CardType]", (err, result) => {
-					res.json(result)
+					res.json(result.recordset);
 					sql.close();
 				});
 			});
@@ -42,3 +42,5 @@ class GetAllCardTypesRoute {
 		});
 	}
 }
+
+module.exports = GetAllCardTypesRoute;
