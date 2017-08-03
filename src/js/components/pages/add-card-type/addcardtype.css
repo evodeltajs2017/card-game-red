@@ -11,7 +11,7 @@
 
 .add-card-type-buttons {
 	display: inline-block;
-	width: 24%;
+	width: 25%;
 }
 
 .add-card-type-content {
@@ -38,14 +38,33 @@
 	margin: 0 auto;
 }
 
-.card-image {
+.card-name {
 	background: yellow;
+	margin: 0 auto;
+	position: relative;
+	max-width: 300px;
+	bottom: -35%;
+}
+
+.card-name h2 {
+	text-align: center;
+}
+
+.card-image {
+	border: 2px solid #444;
 	border-radius: 50%;
 	margin: 0 auto;
 	position: relative;
-	width: 200px;
+	max-width: 200px;
 	height: 200px;
+	text-align: center;
+	vertical-align: middle;
 	top: 15%;
+}
+
+.card-image i {
+	position: relative;
+	top: 30%;
 }
 
 .card-cost {
@@ -84,32 +103,19 @@
 	bottom: -25px;
 }
 
-.card-name {
-	background: yellow;
-	margin: auto auto;
-	position: absolute;
-	width: 300px;
-	left: 25%;
-	top: 75%;
-}
-
-.card-name h2 {
-	text-align: center;
-}
-
 /*Form*/
 .card-type-form {
 	border: 1px solid green;
 	display: inline-block;
 	float: left;
-	margin: 10px 0 10px 0;
-	width: 39%;
+	margin: 80px 0 80px 0;
+	width: 40%;
 }
 
 .card-type-form > form > label {
 	border: 1px solid yellow;
 	float: left;
-	margin: 5px 10px 5px 0;
+	margin: 5px 0 5px 0;
 	width: 40%;
 }
 
@@ -117,6 +123,12 @@
 	border: 1px solid blue;
 	margin-top: 5px;
 	margin-bottom: 5px;
-	width: 58%;
+	width: 60%;
 }
 
+.card-type-form > form > select {
+	border: 1px solid blue;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width: 60%;
+}

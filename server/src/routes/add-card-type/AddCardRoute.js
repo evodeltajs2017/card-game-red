@@ -33,13 +33,8 @@ class AddCardRoute {
 					sql.close();
 				}
 
-				new sql.Request().query(`INSERT dbo.CardType(Name, Cost, Damage, Health, ImageIdentifier)  
-									    VALUES('University', 4, 4, 3,'fa-university'),
-										('Car', 3, 3, 2,'fa-car'),
-										('Bell', 1, 0, 0,'fa-bell-o'),
-										('Cubes', 5, 3, 2,'fa-cubes'),
-										('Gift', 3, 1, 0,'fa-gift');
-										GO`, 
+				new sql.Request().query(`INSERT INTO [dbo].[CardType] (Name, Cost, Damage, Health, ImageIdentifier) 
+										VALUES('${req.body.Name}', ${req.body.Cost}, ${req.body.Damage}, ${req.body.Health}, '${req.body.ImageIdentifier}');`, 
 										(err, result) => {
 											res.json(result);
 											sql.close();

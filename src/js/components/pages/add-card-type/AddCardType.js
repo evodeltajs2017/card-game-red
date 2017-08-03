@@ -32,7 +32,7 @@ class AddCardType {
 			<div class="add-card-type-content">
 				<div class="card-type-view-container">
 					<div class="card-type-view">
-						<div class="card-image"></div>
+						<div class="card-image"><i class="fa" aria-hidden="true"></i></div>
 						<div class="card-cost"></div>
 						<div class="card-damage"></div>
 						<div class="card-health"></div>
@@ -50,7 +50,13 @@ class AddCardType {
 				  		<label>Health</label>
 				  		<input class="card-health-input" type="text" name="health">
 				  		<label>Image</label>
-				  		<input class="card-image-input" type="text" name="image">
+				  		<select class="card-image-input" name="image-options">
+						    <option value="fa-university">University</option>
+						    <option value="fa-car">Car</option>
+						    <option value="fa-bell-o">Bell</option>
+						    <option value="fa-cubes">Cubes</option>
+						    <option value="fa-gift">Gift</option>
+					  	</select>
 					</form>
 				</div>
 			</div>`;
@@ -59,29 +65,29 @@ class AddCardType {
 	}
 
 	addEventListeners() {
-		this.domElement.querySelector(".card-name-input").addEventListener("keyup", (e) => {
-			this.domElement.querySelector(".card-name").innerHTML =
+		this.domElement.querySelector(".card-name-input").addEventListener("keyup", () => {
+			this.domElement.querySelector(".card-name h2").innerHTML =
 			this.domElement.querySelector(".card-name-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-cost-input").addEventListener("keyup", (e) => {
+		this.domElement.querySelector(".card-cost-input").addEventListener("keyup", () => {
 			this.domElement.querySelector(".card-cost").innerHTML =
 			this.domElement.querySelector(".card-cost-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-damage-input").addEventListener("keyup", (e) => {
+		this.domElement.querySelector(".card-damage-input").addEventListener("keyup", () => {
 			this.domElement.querySelector(".card-damage").innerHTML =
 			this.domElement.querySelector(".card-damage-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-health-input").addEventListener("keyup", (e) => {
+		this.domElement.querySelector(".card-health-input").addEventListener("keyup", () => {
 			this.domElement.querySelector(".card-health").innerHTML =
 			this.domElement.querySelector(".card-health-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-image-input").addEventListener("keyup", (e) => {
-			this.domElement.querySelector(".card-image").innerHTML =
-			this.domElement.querySelector(".card-image-input").value;
+		this.domElement.querySelector(".card-image-input").addEventListener("click", () => {
+			this.domElement.querySelector(".fa").className =
+			`fa ${this.domElement.querySelector(".card-image-input").value} fa-5x`;
 		}, false);
 
 		this.domElement.querySelector(".save-btn").addEventListener("click", () => { this.saveCard() }, false);
@@ -96,23 +102,23 @@ class AddCardType {
 		let image = this.domElement.querySelector(".card-image-input").value;
 
 		let cardDataArr = {
-			["Name"]: name,
-			["Cost"]: cost,
-			["Damage"]: damage,
-			["Health"]: health,
-			["Image"]: image		
-		}
+				Name: name,
+				Cost: cost,
+				Damage: damage,
+				Health: health,
+				ImageIdentifier: image		
+			}
+		cardDataArr = JSON.stringify(cardDataArr);
 
 		const postCardType = new CardTypeRepository();
-		postCardType.postCardType((status, cardDataArr) => {
+		postCardType.postCardType(cardDataArr, (status) => {
+
 			if (status !== 200) {
 				alert("Card not added");
 			} else {
-				return cardDataArr;
+				console.log("yes");
 			}
 		});
-		console.log(cardDataArr);
-		// return cardDataArr;
 	}
 
 	destroy() {
