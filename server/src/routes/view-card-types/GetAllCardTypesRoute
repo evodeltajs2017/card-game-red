@@ -1,0 +1,44 @@
+const sql = require("mssql");
+class GetAllCardTypesRoute {
+	constructor(expressApp) {
+		this.app = expressApp;
+	}
+	
+	initialize() {
+		configureConnection();
+		getAllcardTypesFromDatabase();
+	}
+	
+	configureConnection() {
+		const config = {
+			user: "test",
+			password: "test",
+			server: "localhost",
+			database: "CardGame",
+			port: 50209
+		};
+		return config;
+	}
+	
+	getAllcardTypesFromDatabase() {
+		const config = configureConnection();
+		
+		this.app.get("/view-card-types", (req, res) => {
+			sql.connect(config, err => {
+				if (err) {
+					res.status(500).send(err);
+					sql.close();
+				}
+				new sql.Request().query("select * from [dbo].[CardType]", (err, result) => {
+					res.json(result)
+					sql.close();
+				});
+			});
+			
+			sql.on("error", err => {
+				res.status(500).send(err);
+				sql.close();
+			});
+		});
+	}
+}
