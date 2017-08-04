@@ -11,7 +11,19 @@
 
 .open-packs-container .button {
     display: inline-block;
-    width: 24%;
+    background: #fff;
+    border: 1px solid black;
+    padding: 5px;
+    width: 100px;
+}
+
+.open-packs-container .button:disabled {
+    background-color: #aaaaaa;
+    color: #cccccc;
+}
+
+.open-packs-container .button:hover {
+    border: 2px solid black;
 }
 
 .open-packs-container .secondary-container{
@@ -21,7 +33,7 @@
 }
 
 .open-packs-container .grid{
-    border: 1px solid dimgrey;
+    border: 2px solid darkred;
     width: 13%;
     float: left;
     margin-left: 300px;
@@ -30,12 +42,14 @@
 }
 
 .open-packs-container .open-packs-zone{
-    //border: 1px solid red;
+    border: 2px solid darkred;
+    border-radius: 50%;
     width: 720px;
+    height: 720px;
     float: right;
     margin-right: 400px;
-    background: url("circle.png") no-repeat;
-    background-size: contain;
+    /*background: url("circle.png") no-repeat;*/
+    /*background-size: contain;*/
     position: relative;
 }
 
@@ -43,13 +57,10 @@
     bottom: 0;
     position: absolute;
     padding-left: 100px;
-    font-size: 35px;
+    font-size: 40px;
     padding-bottom: 5px;
-}
-
-.open-packs-container .plus{
-    font-family: Arial, serif;
-    display: inline;
+    font-weight: bold;
+    color: darkorange;
 }
 
 .open-packs-container .pack-number{
@@ -58,9 +69,14 @@
 
 .open-packs-container .centered-card-pack{
     position: absolute;
-    width: 150px;
-    height: 220px;
+    width: 145px;
+    height: 215px;
     border: 2px solid darkred;
     top: 255px;
     left: 290px;
+}
+
+.centered-card-pack.opened{
+    background: url("cardpack.PNG") no-repeat;
+    background-size: contain;
 }

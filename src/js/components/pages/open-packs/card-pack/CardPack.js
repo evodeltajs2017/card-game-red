@@ -1,6 +1,7 @@
 class CardPack{
-    constructor(container) {
+    constructor(container, openFunction) {
         this.container = container;
+        this.openFunction = openFunction;
     }
 
     initialize() {
@@ -8,5 +9,7 @@ class CardPack{
         div.className = "card-pack";
         this.container.appendChild(div);
         this.domElement = div;
+
+        this.domElement.addEventListener("click", () => { this.openFunction(); }, false);
     }
 }

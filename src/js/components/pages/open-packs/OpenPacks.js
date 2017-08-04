@@ -1,6 +1,8 @@
 class OpenPacks {
 	constructor(container) {
 		this.container = container;
+		this.unopenedCPNumber = null;
+
 	}
 
 	initialize() {
@@ -10,6 +12,8 @@ class OpenPacks {
         this.domElement = div;
 
         this.render();
+        this.cardsModal = new ShowCardsModal(document.querySelector(".open-packs-container"), () => {this.renderCardPacks();});
+        this.cardsModal.initialize();
 	}
 
 	render(){
@@ -18,15 +22,12 @@ class OpenPacks {
 							<div class="title">
 								<h1>Open Card Packs</h1>
 							</div>
-							<div class="button">
-								<button>Open</button>
-							</div>
+							<button class="button">Open</button>
 						</div>`;
 
         div.innerHTML += `<div class="grid secondary-container">
                             <div class="pack-number-div"> 
-                                <p class="plus">+</p> 
-                                <p class="pack-number">2</p>
+                                <p class="pack-number"></p>
                             </div>
 						</div>`;
 
@@ -36,32 +37,35 @@ class OpenPacks {
 						</div>`;
 
         this.renderCardPacks();
+
+        document.querySelector(".button").addEventListener("click", (e) => {
+            this.openPack(e);
+        }, false);
 	}
 
 	renderCardPacks(){
 	    document.querySelector(".grid").innerHTML = document.querySelector('.pack-number-div').outerHTML;
 
-	    let unopenedCPNumber = 0;
-
         const repo = new UserRepository();
         repo.getUnopenedCardPacks((status, data) => {
             if (status !== 200) {
-
-                div.innerHTML = "<h1>Get Error</h1>";
-
+                console.log("Error");
             } else {
-                console.log(status, data.UnopenedCardPacks);
-                unopenedCPNumber = data.UnopenedCardPacks;
-                console.log(unopenedCPNumber);
+                this.unopenedCPNumber = data.UnopenedCardPacks;
 
-                const rest = unopenedCPNumber - 3;
+                if(this.unopenedCPNumber <= 0){
+                    document.querySelector(".button").disabled = true;
+                }
+
+                let rest = this.unopenedCPNumber - 3;
+                rest = (rest < 0) ? 0 : rest;
 
                 const container = document.querySelector(".grid");
-                for (let i = 1; i <= unopenedCPNumber - rest; i++) {
+                for (let i = 1; i <= this.unopenedCPNumber - rest; i++) {
                     let x = 50;
-                    let y = 35 * i + 190 * ( i - 1 );
+                    let y = 30 * i + 190 * ( i - 1 );
 
-                    const cardPack = new CardPack(container);
+                    let cardPack = (i === 1) ? new CardPack(container, () => {this.openPack();}): new CardPack(container, () => {});
                     cardPack.initialize();
 
                     cardPack.domElement.style.position = "absolute";
@@ -77,10 +81,41 @@ class OpenPacks {
                 if(rest > 0){
                     remainingNumberDiv.style.display = "show";
                     const remainingPacks = document.querySelector(".pack-number");
-                    remainingPacks.innerHTML = rest;
+                    remainingPacks.innerHTML = `+${rest}`;
                 }
             }
         });
+    }
+
+    centerPack(){
+        document.querySelector(".centered-card-pack").className += " opened";
+    }
+
+    removeCenterPack(){
+        document.querySelector(".centered-card-pack").className = "centered-card-pack";
+    }
+
+    showCards(cardsData){
+        this.cardsModal.render(cardsData);
+    }
+
+    getCards(){
+        const cardRepository = new CardRepository();
+        cardRepository.openCardpack((status, data) => {
+            if (status !== 200) {
+                console.log("Error");
+            } else {
+                this.showCards(data);
+            }
+        });
+    }
+
+    openPack() {
+        this.centerPack();
+        setTimeout(() => {
+            this.getCards();
+            this.removeCenterPack();
+        }, 500);
     }
 
 	destroy() {
