@@ -1,11 +1,21 @@
 class CardTypes {
 	constructor(container) {
 		this.container = container;
+		this.itemsPerPage;
+		this.currentPage;
+		this.totalItems;
+		this.totalPages;
 	}
 
 	initialize() {
-		const divMain = document.createElement("div");
+		this.createMainContainer();
+		this.currentPage = 1;
+		this.requestDatabase(this.getSearchField().value);
+		this.setEventListenersForSearch();
+	}
 
+	createMainContainer() {
+		const divMain = document.createElement("div");
 		divMain.innerHTML = 
 		`<div class="card-types">
 			<div class="header">
@@ -18,13 +28,124 @@ class CardTypes {
 			<div class="content"></div>
 		</div>`;
 		this.container.appendChild(divMain);
+	}
 
-		this.requestDatabase(document.querySelector(`.card-types .searchField`).value, 1);
+	requestDatabase(searchName) {
+		const context = this;
+		const cardTypesRepository = new CardTypesRepository();
+		cardTypesRepository.getAllCardTypes(searchName, this.currentPage, (status, data) => {
+			if (status === 200) {
+				context.generateContent(data, searchName);
+			} else {
+				console.log("Error");
+			}
+		});
+	}
 
+	getSearchField() {
+		return document.querySelector(`.card-types .searchField`);
+	}
+
+	generateContent(result, search) {
+		this.initializeValues(result);
+		let contentDiv = `
+			<div class="pages">
+				${this.getGeneratedTable(result)}
+				<div class="itemsPerPage">Showing ${this.itemsPerPage} out of ${this.totalItems} cards</div>
+				<div class="pageButtons">${this.getGeneratedPageButtons()}<div>
+			</div>`;
+		document.querySelector(".card-types .content").innerHTML = contentDiv;
+		this.setEventListenersForPageButtons(search);
+		this.setEventListenersForAdminButtons();
+	}
+
+	initializeValues(result) {
+		this.itemsPerPage = result.cardTypes.length;
+		this.totalItems = result.count;
+		this.totalPages = parseInt(this.totalItems / 10);
+		if (this.totalItems % 10 > 0) {
+			this.totalPages++;
+		}
+	}
+
+	getGeneratedTable(data) {
+		let table = `<table>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Cost</th>
+				<th>Damage</th>
+				<th>Health</th>
+				<th>Admins</th>
+			</tr>`;
+		for (let i = 0; i < this.itemsPerPage; i++) {
+			let cardType = data.cardTypes[i];
+			table += `<tr><td>${cardType.Id}</td>
+			<td>${cardType.Name}</td>
+			<td>${cardType.Cost}</td>
+			<td>${cardType.Damage}</td>
+			<td>${cardType.Health}</td>
+			<td>${this.getGeneratedAdminButtons(i, cardType.Id)}</td></tr>`;
+		}
+		table += `</table>`;
+		return table;
+	}
+
+	getGeneratedAdminButtons(id, data) {
+		return `<button type="button" data-internalid="${data}" class="edit${id}">Edit</button><button type="button" data-internalid="${data}" class="delete${id}">Delete</button>`
+	}
+
+	getGeneratedPageButtons() {
+		let pageButtons = "";
+		for (let i = 1; i <= this.totalPages; i++) {
+			if (this.currentPage == i) {
+				pageButtons += `<button disabled>${i}</button>`;
+			} else {
+				pageButtons += `<button class="pageButton${i}">${i}</button>`;
+			}
+		}
+		return pageButtons;
+	}
+
+	setEventListenersForPageButtons(search) {
+		for (let i = 1; i <= this.totalPages; i++) {
+			if (i != this.currentPage) {
+				document.querySelector(`.card-types .pageButton${i}`).addEventListener("click", (e) => { 
+					this.currentPage = i;
+					this.requestDatabase(search);
+				 }, false);
+			}
+		}
+	}
+
+	setEventListenersForAdminButtons() {
+		for (let i = 0; i < this.itemsPerPage; i++) {
+			this.getAdminEditButton(i).addEventListener("click", (e) => { this.getMessageForEdit(i); }, false);
+			this.getAdminDeleteButton(i).addEventListener("click", (e) => { this.getMessageForDelete(i); }, false);
+		}
+	}
+
+	getAdminEditButton(id) {
+		return document.querySelector(`.card-types .edit${id}`);
+	}
+
+	getMessageForEdit(id) {
+		console.log(`Pressed edit button for the card type with the id ${this.getAdminEditButton(id).getAttribute("data-internalid")}`);
+	}
+
+	getAdminDeleteButton(id) {
+		return document.querySelector(`.card-types .delete${id}`);
+	}
+
+	getMessageForDelete(id) {
+		console.log(`Pressed delete button for the card type with the id ${this.getAdminDeleteButton(id).getAttribute("data-internalid")}`);
+	}
+
+	setEventListenersForSearch() {
 		document.querySelector(`.card-types .searchButton`).addEventListener("click", (e) => { 
 			this.onSearch();
 		}, false);
-		document.querySelector(`.card-types .searchField`).addEventListener("keyup", (e) => {
+		this.getSearchField().addEventListener("keyup", (e) => {
 		    event.preventDefault();
 		    if (event.keyCode == 13) {
 		        this.onSearch();
@@ -32,83 +153,10 @@ class CardTypes {
 		});
 	}
 
-	generateTable(result, page, search) {
-		let itemsPerPage = result.cardTypes.length;
-		let currentPage = page;
-		let totalItems = result.count;
-		let totalPages = parseInt(totalItems / 10);
-		if (totalItems % 10 > 0) {
-			totalPages++;
-		}
-		// if (totalItems == totalItems % itemsPerPage) {
-		// 	itemsPerPage = totalItems % itemsPerPage;
-		// }
-		
-		let pageButtons = "";
-		for (let i = 0; i < totalPages; i++) {
-			if (currentPage == i + 1) {
-				pageButtons += `<button disabled>${i + 1}</button>`;
-			} else {
-				pageButtons += `<button class="pageButton${i + 1}">${i + 1}</button>`;
-			}
-		}
-		
-		let tableTest = `<table>
-			<tr>
-			<th>ID</th>
-			<th>Name</th>
-			<th>Cost</th>
-			<th>Damage</th>
-			<th>Health</th>
-			<th>Admins</th>
-			</tr>`;
-		for (let i = 0; i < itemsPerPage; i++) {
-			let cardType = result.cardTypes[i];
-			let buttonAdmin = `<button type="button" data-internalid="${cardType.Id}" class="edit${i}">Edit</button><button type="button" data-internalid="${cardType.Id}" class="delete${i}">Delete</button>`;
-			tableTest += `<tr><td>${cardType.Id}</td>
-			<td>${cardType.Name}</td>
-			<td>${cardType.Cost}</td>
-			<td>${cardType.Damage}</td>
-			<td>${cardType.Health}</td>
-			<td>${buttonAdmin}</td></tr>`;
-		}
-		tableTest += `</table>`;
-		let contentDiv = `
-			<div class="pages">
-				${tableTest}
-				<div class="itemsPerPage">Showing ${itemsPerPage} out of ${totalItems} cards</div>
-				<div class="pageButtons">${pageButtons}<div>
-			</div>`;
-		document.querySelector(".card-types .content").innerHTML = contentDiv;
-		for (let i = 0; i < totalPages; i++) {
-			if (i + 1 != currentPage) {
-				let button = document.querySelector(`.card-types .pageButton${i + 1}`);
-				button.addEventListener("click", (e) => { this.requestDatabase(search, i + 1); }, false);
-			}
-		}
-		for (let i = 0; i < itemsPerPage; i++) {
-			let buttonEdit = document.querySelector(`.card-types .edit${i}`);
-			buttonEdit.addEventListener("click", (e) => { console.log(`Pressed edit button for the card type with the id ${buttonEdit.getAttribute("data-internalid")}`);}, false);
-			let buttonDelete = document.querySelector(`.card-types .delete${i}`);
-			buttonDelete.addEventListener("click", (e) => { console.log(`Pressed delete button for the card type with the id ${buttonDelete.getAttribute("data-internalid")}`);}, false);
-		}
-	}
-
-	requestDatabase(searchName, pageIndex) {
-		const request = new XMLHttpRequest();
-		const context = this;
-		request.open("GET", `http://localhost:3000/view-card-types?searchName=${searchName}&pageIndex=${(pageIndex - 1) * 10}`, true);
-		request.onreadystatechange = function() {
-			if (request.readyState === XMLHttpRequest.DONE) {
-				context.generateTable(JSON.parse(this.response), pageIndex, searchName);
-			}
-		}
-		request.send();
-	}
-
 	onSearch() {
-		this.requestDatabase(document.querySelector(`.card-types .searchField`).value, 1);
-		document.querySelector(`.card-types .searchField`).value = "";
+		this.currentPage = 1;
+		this.requestDatabase(this.getSearchField().value);
+		this.getSearchField().value = "";
 	}
 
 	destroy() {
