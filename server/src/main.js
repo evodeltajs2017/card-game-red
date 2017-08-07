@@ -11,11 +11,14 @@ const AddCardType = require("./routes/add-card-type/AddCardRoute");
 const addCardType = new AddCardType(app);
 addCardType.initialize();
 
-
 const Dashboard = require("./routes/sample/SampleRoute");
 const dashboard = new Dashboard(app);
 dashboard.initialize();
 
+const DBConnection = require("./database-connection/DBConnection");
+const dbConnection = new DBConnection();
+
 app.listen(3000, function() {
+	dbConnection.connect();
 	console.log("Example app listening on port 3000!");
 });

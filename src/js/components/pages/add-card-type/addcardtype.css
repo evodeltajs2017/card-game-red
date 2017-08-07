@@ -15,14 +15,12 @@
 }
 
 .add-card-type-content {
-	border: 1px solid black;
 	float: left;
 	width: 100%;
 }
 
 /*Card View*/
 .card-type-view-container {
-	border: 1px solid red;
 	display: inline-block;
 	float: left;
 	margin: 80px 0 80px 0;
@@ -105,7 +103,6 @@
 
 /*Form*/
 .card-type-form {
-	border: 1px solid green;
 	display: inline-block;
 	float: left;
 	margin: 80px 0 80px 0;
@@ -113,22 +110,41 @@
 }
 
 .card-type-form > form > label {
-	border: 1px solid yellow;
 	float: left;
-	margin: 5px 0 5px 0;
+	margin: 5px 1% 5px 0;
+	text-align: right;
 	width: 40%;
 }
 
 .card-type-form > form > input {
-	border: 1px solid blue;
 	margin-top: 5px;
 	margin-bottom: 5px;
-	width: 60%;
+	width: 59%;
 }
 
 .card-type-form > form > select {
-	border: 1px solid blue;
 	margin-top: 5px;
 	margin-bottom: 5px;
-	width: 60%;
+	width: 59%;
 }
+
+.add-card-form > input:out-of-range {
+	background-color: red;
+}
+
+/*.error {
+	width  : 100%;
+	padding: 0;
+
+	font-size: 80%;
+	color: white;
+	background-color: #900;
+	border-radius: 0 0 5px 5px;
+
+
+	box-sizing: border-box;
+}
+
+.error.active {
+	padding: 8px;
+}*/

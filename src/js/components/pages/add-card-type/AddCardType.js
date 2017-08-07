@@ -4,64 +4,10 @@ class AddCardType {
 	}
 
 	initialize() {
-		this.createDomElement();
-		this.render();
+		const domElement = new HtmlElements();
+		this.domElement = domElement.createAddCardTypeTemplate();
 		this.addEventListeners();
-	}
-
-	createDomElement() {
-		const div = document.createElement("div");
-		div.className = "add-card-type-container";
-		this.container.appendChild(div);
-		this.domElement = div;
-
-		return this.domElement;
-	}
-
-	render() {
-		const htmlTemplate =
-			`<div class="add-card-type-header">
-				<div class="add-card-type-title">
-					<h1>Add Card Type</h1>
-				</div>
-				<div class="add-card-type-buttons">
-					<button class="save-btn">Save</button>
-					<button class="cancel-btn">Cancel</button>
-				</div>
-			</div>
-			<div class="add-card-type-content">
-				<div class="card-type-view-container">
-					<div class="card-type-view">
-						<div class="card-image"><i class="fa" aria-hidden="true"></i></div>
-						<div class="card-cost"></div>
-						<div class="card-damage"></div>
-						<div class="card-health"></div>
-						<div class="card-name"><h2>Name</h2></div>
-					</div>
-				</div>
-				<div class="card-type-form">
-					<form action="">
-				  		<label>Name</label>
-				  		<input class="card-name-input" type="text" name="name">
-				  		<label>Cost</label>
-				  		<input class="card-cost-input" type="text" name="cost">
-				  		<label>Damage</label>
-				  		<input class="card-damage-input" type="text" name="damage">
-				  		<label>Health</label>
-				  		<input class="card-health-input" type="text" name="health">
-				  		<label>Image</label>
-				  		<select class="card-image-input" name="image-options">
-						    <option value="fa-university">University</option>
-						    <option value="fa-car">Car</option>
-						    <option value="fa-bell-o">Bell</option>
-						    <option value="fa-cubes">Cubes</option>
-						    <option value="fa-gift">Gift</option>
-					  	</select>
-					</form>
-				</div>
-			</div>`;
-
-		this.domElement.innerHTML = htmlTemplate;
+		//this.addValidationMessages();
 	}
 
 	addEventListeners() {
@@ -90,33 +36,95 @@ class AddCardType {
 			`fa ${this.domElement.querySelector(".card-image-input").value} fa-5x`;
 		}, false);
 
-		this.domElement.querySelector(".save-btn").addEventListener("click", () => { this.saveCard() }, false);
+		this.domElement.querySelector(".save-btn").addEventListener("click", () => { 
+			this.saveCard();
+			this.validateCard();
+			this.domElement.querySelector(".add-card-form").reset();
+		}, false);
+
+		this.domElement.querySelector(".cancel-btn").addEventListener("click", () => { 
+			this.domElement.querySelector(".add-card-form").reset();
+		}, false);
+		
 	}
 
+	// addValidationMessages() {
+	// 	let error = this.domElement.querySelector('.error');
+	// 	let cardAddForm = this.domElement.querySelector('.add-card-form');
+	// 	let costInput = this.domElement.querySelector(".card-cost-input");
+
+	// 	cardAddForm.querySelector("input[type='number']").addEventListener("input", () => {
+	// 		if (costInput.validity.valid) {
+	// 		    error.innerHTML = "";
+	// 		    error.className = "error";
+	// 		}
+	// 	}, false);
+
+	// 	this.domElement.querySelector(".save-btn").addEventListener("click", (event) => {
+	// 		if (!costInput.validity.valid) {
+	// 			costInput.setCustomValidity('Value must be between 0 and 10"')
+	// 			error.innerHTML = event.validationMessage;
+	// 			error.className = "error active";
+	// 			event.preventDefault();
+	// 		}
+	// 	}, false);
+	// }
+
 	saveCard() {
+		let card = {
+			"Name": "",
+			"Cost": null,
+			"Damage": null,
+			"Health": null,
+			"ImageIdentifier": ""
+		};
 
-		let name = this.domElement.querySelector(".card-name-input").value;
-		let cost = this.domElement.querySelector(".card-cost-input").value;
-		let damage = this.domElement.querySelector(".card-damage-input").value;
-		let health = this.domElement.querySelector(".card-health-input").value;
-		let image = this.domElement.querySelector(".card-image-input").value;
+		card.Name = this.domElement.querySelector(".card-name-input").value.trim();
+		card.Cost = parseInt(this.domElement.querySelector(".card-cost-input").value.trim(), 10);
+		card.Damage = parseInt(this.domElement.querySelector(".card-damage-input").value.trim(), 10);
+		card.Health = parseInt(this.domElement.querySelector(".card-health-input").value.trim(), 10);
+		card.ImageIdentifier = this.domElement.querySelector(".card-image-input").value.trim();
 
-		let cardDataArr = {
-				Name: name,
-				Cost: cost,
-				Damage: damage,
-				Health: health,
-				ImageIdentifier: image		
-			}
-		cardDataArr = JSON.stringify(cardDataArr);
+		let validation = new CardValidations(card);
+		let validCard = validation.validateCard();
+		console.log(validCard);
+	}
 
-		const postCardType = new CardTypeRepository();
-		postCardType.postCardType(cardDataArr, (status) => {
+	validateCard() {
+
+	    let inputElements, inputClass, inputType, i, inputLength, inputNode, id;
+
+	    inputElements = this.domElement.getElementsByTagName("input");
+	    id = this.domElement.getElementById("ideal");
+
+	    for (i = 0, inputLength = inputElements.length; i < inputLength; i++) {
+	        inputClass = inputElements[i].className;
+	        inputType = inputElements[i].type;
+	        inputNode = this.domElement.getElementsByClassName(inputClass);
+	         
+            if (inputElements[i].value === "") {
+                let spanTag = document.createElement("span");
+                spanTag.innerHTML = "error";
+                inputNode.id.insertBefore(spanTag, inputNode.nextSibling);
+            }
+	        
+	    }
+	    return false; // Do Nothing
+
+	}
+		// let validCard = (validation.validateCardNumInputs(card.Cost) && validation.validateCardNumInputs(card.Damage) && validation.validateCardNumInputs(card.Health)
+		// 				&& validation.validateCardName(card.Name)) ? JSON.stringify(card) : false;
+
+		// (validCard) ? this.displayServerResponse(validCard) : false;
+
+	displayServerResponse(data) {
+		const cardType = new CardTypeRepository();
+		cardType.postCardType(data, (status, response) => {
 
 			if (status !== 200) {
-				alert("Card not added");
+				alert("Server error!");
 			} else {
-				console.log("yes");
+				alert(response);
 			}
 		});
 	}

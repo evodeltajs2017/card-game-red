@@ -7,45 +7,49 @@ class AddCardRoute {
 
 	initialize() {
 
-		this.configureConnection();
-		this.insertCardInDb();
-	}
+		this.postRequest( (data, res) => {
+			let validData = this.validateInputs(data, res);
 
-	configureConnection() {
-		const config = {
-			user: "test",
-			password: "test",
-			server: "localhost",
-			database: "CardGame",
-			port: 50217
-		};
-
-		return config;
-	}
-
-	insertCardInDb() {
-		const config = this.configureConnection();
-
-		this.app.post("/add-card-type", (req, res) => {
-			sql.connect(config, err => {
-				if (err) {
-					res.status(500).send(err);
-					sql.close();
-				}
-
-				new sql.Request().query(`INSERT INTO [dbo].[CardType] (Name, Cost, Damage, Health, ImageIdentifier) 
-										VALUES('${req.body.Name}', ${req.body.Cost}, ${req.body.Damage}, ${req.body.Health}, '${req.body.ImageIdentifier}');`, 
-										(err, result) => {
-											res.json(result);
-											sql.close();
-										});
-			});
-
-			sql.on("error", err => {
-				res.status(500).send(err);
-				sql.close();
-			});
+			if (validData) {
+				this.insertCardInDb(data, res);
+			} 
 		});
+	}
+
+	postRequest(callback) {
+		this.app.post("/add-card-type", (req, res) => { callback(req.body, res) });
+	}
+
+	validateInputs(data, res) {
+		let reqArr = Object.keys(data).map(k => data[k]);
+		let notValidArr = [];
+		const reqArrLength = reqArr.length;
+
+		for (let i = 0; i < reqArrLength; i++) {
+			if (reqArr[i] === null || reqArr[i] === "") {
+				notValidArr.push(reqArr[i]);
+			}
+		}
+
+		if (notValidArr.length > 0) {
+			res.json("Card not added. Please fill out all the fields.");
+		} else {
+			return true;
+		}
+	}
+
+	insertCardInDb(data, res) {
+
+		new sql.Request().query(
+			`INSERT INTO [dbo].[CardType] (Name, Cost, Damage, Health, ImageIdentifier) 
+			VALUES('${data.Name}', ${data.Cost}, ${data.Damage}, ${data.Health}, '${data.ImageIdentifier}');`, 
+			(err, result) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				res.json("Card added successfully!");
+			});
 	}
 }
 
