@@ -12,8 +12,7 @@ class CardTypeRepository {
 		    	callback(this.status, JSON.parse(this.responseText));
 		    }
 		};
-		
-		xhr.send(data);
+		xhr.send(JSON.stringify(data));
 	}
 
 }
