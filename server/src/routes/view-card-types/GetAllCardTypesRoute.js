@@ -42,7 +42,7 @@ class GetAllCardTypesRoute {
 			res.status(400).send();
 			response = "400";
 		}
-		if (search === "" || search === "undefined") {
+		if (search === "" || search === undefined) {
 			query = "";
 		}
 		return { response, query };
