@@ -1,10 +1,11 @@
 class CardTypes {
+
 	constructor(container) {
 		this.container = container;
-		this.itemsPerPage;
-		this.currentPage;
-		this.totalItems;
-		this.totalPages;
+		this.itemsPerPage = undefined;
+		this.currentPage = undefined;
+		this.totalItems = undefined;
+		this.totalPages = undefined;
 	}
 
 	initialize() {
@@ -31,11 +32,10 @@ class CardTypes {
 	}
 
 	requestDatabase(searchName) {
-		const context = this;
 		const cardTypesRepository = new CardTypesRepository();
 		cardTypesRepository.getAllCardTypes(searchName, this.currentPage, (status, data) => {
 			if (status === 200) {
-				context.generateContent(data, searchName);
+				this.generateContent(data, searchName);
 			} else {
 				console.log("Error");
 			}
@@ -146,8 +146,7 @@ class CardTypes {
 			this.onSearch();
 		}, false);
 		this.getSearchField().addEventListener("keyup", (e) => {
-		    event.preventDefault();
-		    if (event.keyCode == 13) {
+		    if (e.keyCode == 13) {
 		        this.onSearch();
 		    }
 		});
@@ -161,4 +160,5 @@ class CardTypes {
 
 	destroy() {
 	}
+
 }
