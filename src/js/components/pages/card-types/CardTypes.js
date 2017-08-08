@@ -35,6 +35,7 @@ class CardTypes {
 		const cardTypesRepository = new CardTypesRepository();
 		const promise = cardTypesRepository.getCardTypes(this.currentPage, searchName);
 		promise.then((data) => {
+			console.log(`The statement is${data.test}`);
 			this.generateContent(data, searchName);
 		}).catch((reason) => {
 			console.log("Error", reason.statusText);
