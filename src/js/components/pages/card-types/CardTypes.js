@@ -11,7 +11,7 @@ class CardTypes {
 	initialize() {
 		this.createMainContainer();
 		this.currentPage = 1;
-		this.requestDatabase(this.getSearchField().value);
+		this.requestPromise();
 		this.setEventListenersForSearch();
 	}
 
@@ -31,14 +31,13 @@ class CardTypes {
 		this.container.appendChild(divMain);
 	}
 
-	requestDatabase(searchName) {
+	requestPromise(searchName) {
 		const cardTypesRepository = new CardTypesRepository();
-		cardTypesRepository.getAllCardTypes(searchName, this.currentPage, (status, data) => {
-			if (status === 200) {
-				this.generateContent(data, searchName);
-			} else {
-				console.log("Error");
-			}
+		const promise = cardTypesRepository.getCardTypes(this.currentPage, searchName);
+		promise.then((data) => {
+			this.generateContent(data, searchName);
+		}).catch((reason) => {
+			console.log("Error", reason.statusText);
 		});
 	}
 
@@ -76,7 +75,7 @@ class CardTypes {
 				<th>Cost</th>
 				<th>Damage</th>
 				<th>Health</th>
-				<th>Admins</th>
+				<th>Actions</th>
 			</tr>`;
 		for (let i = 0; i < this.itemsPerPage; i++) {
 			let cardType = data.cardTypes[i];
@@ -112,7 +111,7 @@ class CardTypes {
 			if (i != this.currentPage) {
 				document.querySelector(`.card-types .pageButton${i}`).addEventListener("click", (e) => { 
 					this.currentPage = i;
-					this.requestDatabase(search);
+					this.requestPromise(search);
 				 }, false);
 			}
 		}
@@ -154,7 +153,7 @@ class CardTypes {
 
 	onSearch() {
 		this.currentPage = 1;
-		this.requestDatabase(this.getSearchField().value);
+		this.requestPromise(this.getSearchField().value);
 		this.getSearchField().value = "";
 	}
 
