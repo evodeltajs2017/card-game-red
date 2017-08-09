@@ -16,4 +16,14 @@ class CardTypesRepository {
 			xhr.send();
 		});
 	}
+
+	deleteCardType(id) {
+		return new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest();
+			xhr.open("DELETE", `http://localhost:3000/card-types/${id}`, true);
+			xhr.onload = () => { resolve(JSON.parse(xhr.responseText)); };
+			xhr.onerror = () => { reject(xhr.statusText); };
+			xhr.send();
+		});
+	}
 }

@@ -12,6 +12,10 @@ const ViewCardTypes = require("./routes/view-card-types/GetAllCardTypesRoute");
 const viewCardTypes = new ViewCardTypes(app);
 viewCardTypes.initialize();
 
+const DeleteCardType = require("./routes/view-card-types/DeleteCardTypeRoute");
+const deleteCardType = new DeleteCardType(app);
+deleteCardType.initialize();
+
 const DBConnection = require("./database-connection/DBConnection");
 const dbConnection = new DBConnection();
 

@@ -120,7 +120,7 @@ class CardTypes {
 	setEventListenersForAdminButtons() {
 		for (let i = 0; i < this.itemsPerPage; i++) {
 			this.getAdminEditButton(i).addEventListener("click", (e) => { this.getMessageForEdit(i); }, false);
-			this.getAdminDeleteButton(i).addEventListener("click", (e) => { this.getMessageForDelete(i); }, false);
+			this.getAdminDeleteButton(i).addEventListener("click", (e) => { this.deleteCardType(i); }, false);
 		}
 	}
 
@@ -136,8 +136,22 @@ class CardTypes {
 		return document.querySelector(`.card-types .delete${id}`);
 	}
 
-	getMessageForDelete(id) {
-		console.log(`Pressed delete button for the card type with the id ${this.getAdminDeleteButton(id).getAttribute("data-internalid")}`);
+	deleteCardType(id) {
+		let cardTypeId = this.getAdminDeleteButton(id).getAttribute("data-internalid");
+		if (confirm(`Are you sure you want to delete the card type with the id ${cardTypeId}?`)) {
+			const cardTypesRepository = new CardTypesRepository();
+			const promise = cardTypesRepository.deleteCardType(cardTypeId);
+			promise.then((data) => {
+				if (data.isCardType == 1) {
+					alert(`Deleted the card type with the id ${cardTypeId} and deleted ${data.countCards} cards.`);
+				} else {
+					alert(`The card type with the id ${cardTypeId} was already deleted.`);
+				}
+				this.requestPromise();
+			}).catch((reason) => {
+				console.log("Error", reason.statusText);
+			});
+		}
 	}
 
 	setEventListenersForSearch() {

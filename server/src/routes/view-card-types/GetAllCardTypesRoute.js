@@ -47,6 +47,7 @@ class GetAllCardTypesRoute {
 		}
 		return { response, query };
 	} 
+
 }
 
 module.exports = GetAllCardTypesRoute;
