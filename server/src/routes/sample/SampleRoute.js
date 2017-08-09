@@ -11,7 +11,7 @@ class SampleRoute {
 			password: "test",
 			server: "localhost",
 			database: "CardGame",
-			port: 1858
+			port: 50209
 		};
 
 		this.app.get("/sample", (req, res) => {

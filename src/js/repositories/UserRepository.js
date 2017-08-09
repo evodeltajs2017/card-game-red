@@ -12,6 +12,6 @@ class UserRepository {
 			}
 		};
 
-		xhr.send();
+		// xhr.send();
 	}
 }

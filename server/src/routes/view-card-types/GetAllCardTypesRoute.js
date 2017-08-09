@@ -1,0 +1,52 @@
+const sql = require("mssql");
+
+class GetAllCardTypesRoute {
+	constructor(expressApp) {
+		this.app = expressApp;
+		this.GOOD_RESPONSE = "200";
+	}
+	
+	initialize() {
+		this.getAllCardTypesFromDatabase();
+	}
+	
+	getAllCardTypesFromDatabase() {
+		let count = 0;
+		this.app.get("/view-card-types/", (req, res) => {
+			let search = req.query.searchName;
+			let index = req.query.pageIndex;
+			let paramCheck = this.checkParams(req, res);
+			if (this.GOOD_RESPONSE === paramCheck.response) {
+				new sql.Request().query(`select count(*) as number from [dbo].[CardType]${paramCheck.query}`, (err, result) => {
+					count = result.recordset[0].number;
+				});
+				new sql.Request().query(`select * from [dbo].[CardType]${paramCheck.query} order by [Id] desc OFFSET ${index} ROWS FETCH NEXT 10 ROWS ONLY`, (err, result) => {
+					res.json({
+						count,
+					 	cardTypes: result.recordset,
+					 	test: paramCheck.query
+					});
+				});
+			} else {
+				return;
+			}
+		});
+	}
+
+	checkParams(req, res) {
+		let search = req.query.searchName;
+		let index = req.query.pageIndex;
+		let response = "200";
+		let query = ` where [Name] like '%${search}%'`;
+		if (index == "undefined" || index == "") {
+			res.status(400).send();
+			response = "400";
+		}
+		if (search === "" || search === undefined) {
+			query = "";
+		}
+		return { response, query };
+	} 
+}
+
+module.exports = GetAllCardTypesRoute;
