@@ -2,16 +2,19 @@ class UserRepository {
 	constructor() {
 	}
 
-	getUnopenedCardPacks(callback) {
-		const xhr = new XMLHttpRequest();
-		xhr.open("GET", "http://localhost:3000/unopenedCardPacks", true);
+	getUnopenedCardPacks() {
+		return new Promise((resolve, reject) => {
 
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState === XMLHttpRequest.DONE) {
-				callback(this.status, JSON.parse(this.responseText));
-			}
-		};
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://localhost:3000/unopenedCardPacks", true);
 
-		xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    resolve(JSON.parse(this.responseText));
+                }
+            };
+
+            xhr.send();
+		});
 	}
 }

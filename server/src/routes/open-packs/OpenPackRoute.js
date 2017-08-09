@@ -6,7 +6,6 @@ class OpenPackRoute {
         this.cards = [];
     }
 
-
     initialize() {
         this.app.get("/openPack", (req, res) => {
             this.cards = [];
@@ -43,13 +42,13 @@ class OpenPackRoute {
     }
 
     addCards(req, res) {
-        let queryString = "";
+        let queryString = "insert into [dbo].[Card] values ";
 
         for(let i=0; i<this.cards.length; i++) {
             let type = this.cards[i].Id;
-            queryString += `insert into [dbo].[Card] (CardTypeId, UserId) values (${type}, 1)`;
+            queryString += `(${type}, 1), `;
         }
-        new sql.Request().query(queryString, (err, result) => {
+        new sql.Request().query(queryString.substring(0, queryString.length - 2), (err, result) => {
             console.log("Added");
             this.decrementUnopenedCardPacks(req, res);
         });

@@ -1,7 +1,8 @@
 .navbar button {
 	background: #fff;
 	border: 1px solid #aaa;
-	padding: 5px;
+	padding: 10px;
+	font-family: Aclonica;
 }
 
 .navbar button:hover {

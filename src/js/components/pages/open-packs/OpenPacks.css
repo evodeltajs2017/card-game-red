@@ -1,5 +1,16 @@
+body{
+    background-color: #333  ;
+    color: darkorange;
+    font-family: Aclonica;
+}
+
+.open-packs-container{
+    color: darkorange;
+}
+
 .open-packs-container .header {
     border-bottom: 3px solid #ccc;
+    box-shadow: 0px 10px 15px -9px rgba(170,170,170,1);
     width: 100%;
 }
 
@@ -7,14 +18,17 @@
     display: inline-block;
     padding-left: 5%;
     width: 70%;
+    font-size: 20px;
+
 }
 
 .open-packs-container .button {
     display: inline-block;
     background: #fff;
     border: 1px solid black;
-    padding: 5px;
+    padding: 10px;
     width: 100px;
+    font-family: Aclonica, serif;
 }
 
 .open-packs-container .button:disabled {
@@ -28,37 +42,50 @@
 
 .open-packs-container .secondary-container{
     display: inline-block;
-    height: 750px;
-    margin-top: 50px;
+    height: 760px;
+    margin-top: 30px;
 }
 
 .open-packs-container .grid{
-    border: 2px solid darkred;
+    border: 2px solid #aaa;
+    box-shadow: inset 0px 0px 30px 1px #aaa;
     width: 13%;
     float: left;
     margin-left: 300px;
-    position: relative;
     text-align: center;
+    box-sizing: border-box;
+    padding: 50px;
+    position: relative;
+}
+
+.open-packs-container .packs-div {
+    position: absolute;
+    top: 258px;
 }
 
 .open-packs-container .open-packs-zone{
-    border: 2px solid darkred;
+    border: 2px solid rgb(151, 0, 0);
+    box-shadow: inset 0px 0px 150px -7px rgb(151, 0, 0);
     border-radius: 50%;
     width: 720px;
     height: 720px;
     float: right;
     margin-right: 400px;
-    /*background: url("circle.png") no-repeat;*/
-    /*background-size: contain;*/
     position: relative;
+}
+
+.open-packs-container .first-pack{
+    top: 209px;
+    left: 352px;
+    position: absolute;
 }
 
 .open-packs-container .pack-number-div{
     bottom: 0;
     position: absolute;
-    padding-left: 100px;
+    padding-left: 40px;
     font-size: 40px;
-    padding-bottom: 5px;
+    padding-bottom: 3px;
     font-weight: bold;
     color: darkorange;
 }
@@ -69,9 +96,10 @@
 
 .open-packs-container .centered-card-pack{
     position: absolute;
-    width: 145px;
+    width: 144px;
     height: 215px;
-    border: 2px solid darkred;
+    border: 2px solid #aaa;
+    box-shadow: inset 0px 0px 50px -10px rgba(170,170,170,1);
     top: 255px;
     left: 290px;
 }
@@ -79,4 +107,44 @@
 .centered-card-pack.opened{
     background: url("cardpack.PNG") no-repeat;
     background-size: contain;
+}
+
+.open-packs-zone.circle-burn {
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    line-height: 100px;
+    animation: animate-circle 1s ease-in;
+    animation-iteration-count: 1;
+}
+
+.card-pack.animated.move.explode {
+    animation: animate-circle 1s ease-in;
+}
+
+@keyframes animate-circle {
+    0% {
+        box-shadow: inset 0 0 150px -7px rgb(151, 0, 0);
+    }
+    20% {
+        box-shadow: inset 0 10px 0 -7px rgb(151, 0, 0);
+    }
+    21% {
+        transform: scale(0.1, 0.1);
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+        box-shadow: inset 0 0 180px -3px rgb(151, 0, 0);
+        transform: scale(1, 1);
+    }
+}
+
+.explosion-pixel{
+    height: 15px;
+    width: 15px;
+    top: 355px;
+    left: 355px;
+    position: absolute;
+    transition: all 1.5s ease-out;
 }

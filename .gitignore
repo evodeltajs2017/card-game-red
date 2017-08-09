@@ -5,7 +5,4 @@ package-lock.json
 *.ipr
 *.iws
 .idea
-build
-out
-generated
 MANIFEST.MF

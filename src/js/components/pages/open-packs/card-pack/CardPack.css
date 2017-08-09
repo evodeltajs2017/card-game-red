@@ -3,4 +3,17 @@
     height: 215px;
     background: url("../cardpack.PNG") no-repeat;
     background-size: contain;
+    margin-bottom: 10px;
+    z-index: 1;
+}
+
+.card-pack.animated{
+    transition: margin-top 1.5s, margin-left 1.5s, transform 1.5s ease-in-out, opacity 1s ease-in;
+    z-index: 2;
+}
+
+.card-pack.animated.move{
+    margin-top: 223px;
+    margin-left: 739px;
+    transform: rotate(180deg);
 }
