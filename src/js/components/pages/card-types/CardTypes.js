@@ -142,6 +142,7 @@ class CardTypes {
 			const cardTypesRepository = new CardTypesRepository();
 			const promise = cardTypesRepository.deleteCardType(cardTypeId);
 			promise.then((data) => {
+				console.log(data);
 				if (data.isCardType == 1) {
 					alert(`Deleted the card type with the id ${cardTypeId} and deleted ${data.countCards} cards.`);
 				} else {
