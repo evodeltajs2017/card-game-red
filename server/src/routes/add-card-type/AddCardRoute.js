@@ -1,4 +1,5 @@
 const sql = require("mssql");
+const CardValidations = require("./CardValidations");
 
 class AddCardRoute {
 	constructor(expressApp) {
@@ -8,36 +9,36 @@ class AddCardRoute {
 	initialize() {
 
 		this.postRequest( (data, res) => {
-			let validData = this.validateInputs(data, res);
+			const validation = new CardValidations();
 
-			if (validData) {
-				this.insertCardInDb(data, res);
-			} 
-		});
+			validation.isNameUnique = (data, (data, callback) => { this.isNameUnique(data, callback); });
+
+			validation.validateCard( (newCard) => {
+
+				if (newCard === data) {
+					console.log("no!");
+					this.insertCardInDb(data, res);
+				} else {
+					console.log(newCard);
+					res.json(newCard);
+				}
+			}, data);
+		})
+		
+		// this.postRequest( (data,res) => {
+		// 	console.log(this.getCard();
+		// });
+		
 	}
 
 	postRequest(callback) {
-		this.app.post("/add-card-type", (req, res) => { callback(req.body, res) });
+		this.app.post("/add-card-type", (req, res) => { callback(req.body, res); });
 	}
 
-	validateInputs(data, res) {
-		let reqArr = Object.keys(data).map(k => data[k]);
-		let notValidArr = [];
-		const reqArrLength = reqArr.length;
-
-		for (let i = 0; i < reqArrLength; i++) {
-			if (reqArr[i] === null || reqArr[i] === "") {
-				notValidArr.push(reqArr[i]);
-			}
-		}
-
-		if (notValidArr.length > 0) {
-			res.json("Card not added. Please fill out all the fields.");
-		} else {
-			return true;
-		}
-	}
-
+	// getCard(card, callback) {
+	// 	callback(card);
+	// }
+	
 	insertCardInDb(data, res) {
 
 		new sql.Request().query(
@@ -49,6 +50,22 @@ class AddCardRoute {
 					return;
 				}
 				res.json("Card added successfully!");
+			});
+	}
+
+	isNameUnique(name, callback) {
+		new sql.Request().query(
+			`SELECT Name FROM [dbo].[CardType] WHERE Name LIKE '${name}';`,
+			(err, result) => {
+				if (err) {
+					console.log(err);
+					return;
+				} 
+				if (result.recordset.length > 0) {
+					callback(false);
+				} else {
+					callback(true);
+				}
 			});
 	}
 }

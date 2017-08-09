@@ -1,0 +1,14 @@
+.navbar {
+	height: 30px;
+}
+.navbar button {
+	background: #fff;
+	border: 1px solid #aaa;
+	margin: 0 1% 0 0;
+	padding: 5px;
+}
+
+.navbar button:hover {
+	border: 1px solid #000;
+	cursor: pointer;
+}
