@@ -1,12 +1,14 @@
-const marginLeftParticles = 360;
-const marginTopParticles = 360;
-
 class OpenPacks {
 	constructor(container) {
 		this.container = container;
 		this.unopenedCPNumber = null;
+        this.marginLeftParticles = 360;
+        this.marginTopParticles = 360;
+        this.pi = 3.14;
+        this.piRadians = 180;
+        this.domElement = null;
 
-	}
+    }
 
 	initialize() {
 		const div = document.createElement("div");
@@ -20,37 +22,36 @@ class OpenPacks {
 	}
 
 	render(){
-		const div = document.querySelector(".open-packs-container");
-        div.innerHTML = `<div class="header">
+        this.domElement.innerHTML = `<div class="header">
 							<div class="title">
 								<h1>Open Card Packs</h1>
 							</div>
 							<button class="button">Open</button>
 						</div>`;
 
-        div.innerHTML += `<div class="grid secondary-container">
+        this.domElement.innerHTML += `<div class="grid secondary-container">
                             <div class="packs-div"></div>
                             <div class="pack-number-div"> 
                                 <p class="pack-number"></p>
                             </div>
 						</div>`;
 
-        div.innerHTML += `<div class="open-packs-zone secondary-container">
-                            <div class="centered-card-pack">
-                            </div>
+        this.domElement.innerHTML += `<div class="open-packs-zone secondary-container">
+                            <div class="particles-div"></div>
+                            <div class="centered-card-pack"></div>
 						</div>`;
 
         this.renderCardPacksGrid();
 
-        document.querySelector(".button").addEventListener("click", (e) => {
+        this.domElement.querySelector(".button").addEventListener("click", (e) => {
             this.openPack(e);
         }, false);
 	}
 
 	renderCardPacksGrid(){
-	    document.querySelector(".packs-div").innerHTML = "";
-	    if(document.querySelector(".first-pack") !== null){
-            document.querySelector(".first-pack").outerHTML = "";
+        this.domElement.querySelector(".packs-div").innerHTML = "";
+	    if(this.domElement.querySelector(".first-pack") !== null){
+            this.domElement.querySelector(".first-pack").outerHTML = "";
         }
 
         const repo = new UserRepository();
@@ -74,11 +75,11 @@ class OpenPacks {
     }
 
     disableOpenButton(){
-        document.querySelector(".button").disabled = true;
+        this.domElement.querySelector(".button").disabled = true;
     }
 
     renderCardPacks(notDisplayablePacksNr){
-        const container = document.querySelector(".packs-div");
+        const container =  this.domElement.querySelector(".packs-div");
         this.renderFirstCardPack();
 
         for (let i = 1; i <= this.unopenedCPNumber - notDisplayablePacksNr - 1; i++) {
@@ -90,36 +91,36 @@ class OpenPacks {
 
     renderFirstCardPack(){
         if(this.unopenedCPNumber >= 1){
-            const div = document.querySelector(".open-packs-container");
 
-            let cardPack = new CardPack(div, () => {this.openPack();});
+            let cardPack = new CardPack( this.domElement, () => {this.openPack();});
             cardPack.initialize();
             cardPack.domElement.className += " first-pack animated";
         }
     }
 
     displayNumberOfRemainingPacks(remainingPacksNr){
-        const remainingNumberDiv = document.querySelector(".pack-number-div");
+        const remainingNumberDiv =  this.domElement.querySelector(".pack-number-div");
 
         if(remainingPacksNr === 0){
             remainingNumberDiv.style.display = "none";
         }
         if(remainingPacksNr > 0){
             remainingNumberDiv.style.display = "show";
-            const remainingPacks = document.querySelector(".pack-number");
+            const remainingPacks =  this.domElement.querySelector(".pack-number");
             remainingPacks.innerHTML = `+${remainingPacksNr}`;
         }
     }
 
     centerPack(){
-        document.querySelector(".card-pack.animated").className += " move";
+        this.domElement.querySelector(".card-pack.animated").className += " move";
     }
 
     resetOpenPackCssClasses(){
-        document.querySelector(".centered-card-pack").className = "centered-card-pack";
-        document.querySelector(".open-packs-zone").className = " open-packs-zone secondary-container";
-        document.querySelector(".centered-card-pack").style.display = "inherit";
-        document.querySelector(".move").style.opacity = "1.0";
+        this.domElement.querySelector(".centered-card-pack").className = "centered-card-pack";
+        this.domElement.querySelector(".open-packs-zone").className = " open-packs-zone secondary-container";
+        this.domElement.querySelector(".centered-card-pack").style.display = "inherit";
+        this.domElement.querySelector(".move").style.opacity = "1.0";
+        this.domElement.querySelector(".particles-div").innerHTML = "";
     }
 
     showCards(cardsData){
@@ -138,16 +139,16 @@ class OpenPacks {
     }
 
     animateCircle(){
-        document.querySelector(".open-packs-zone").className += " circle-burn";
+        this.domElement.querySelector(".open-packs-zone").className += " circle-burn";
     }
 
     explodePack(){
-        document.querySelector(".card-pack.animated.move").className += " explode";
+        this.domElement.querySelector(".card-pack.animated.move").className += " explode";
     }
 
     hideCenterPack(){
-        document.querySelector(".move").style.opacity = "0.0";
-        document.querySelector(".centered-card-pack").style.display = "none";
+        this.domElement.querySelector(".move").style.opacity = "0.0";
+        this.domElement.querySelector(".centered-card-pack").style.display = "none";
     }
 
     displayExplosionParticles(){
@@ -160,35 +161,34 @@ class OpenPacks {
 
             const particleDiv = this.createExplosionParticleDiv();
 
-            particleDiv.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            const randColor = colors[Math.floor(Math.random() * colors.length)];
+            particleDiv.style.backgroundColor = randColor;
+            particleDiv.style.boxShadow = `0 0 0 20px ${randColor}`;
 
             setTimeout(() => {
-                this.setExplosionParticleStyle(particleDiv, particleNumber, i);
+                this.setExplosionParticleStyle(particleDiv, particleNumber, i, randColor);
             }, 100);
         }
     }
 
     createExplosionParticleDiv(){
-        const centerPack = document.querySelector(".open-packs-zone");
-        const particleDiv = document.createElement("div");
+        const centerPack =  this.domElement.querySelector(".particles-div");
+        const particleDiv =  document.createElement("div");
         particleDiv.className = "explosion-pixel";
         centerPack.appendChild(particleDiv);
-        this.domElement = particleDiv;
         return particleDiv;
     }
 
-    setExplosionParticleStyle(explosionParticle, particleNumber, index){
+    setExplosionParticleStyle(explosionParticle, particleNumber, index, color){
         const circleMaxRadius = 400;
         let randRadius = Math.random() * circleMaxRadius;
 
-        let x = marginLeftParticles + (randRadius + 200) * Math.sin(pi / piRadians * index * (2*piRadians/particleNumber));
-        let y = marginTopParticles + randRadius * Math.cos(pi / piRadians * index * (2*piRadians/particleNumber));
+        let x = this.marginLeftParticles + (randRadius + 200) * Math.sin(this.pi / this.piRadians * index * (2*this.piRadians/particleNumber));
+        let y = this.marginTopParticles + randRadius * Math.cos(this.pi / this.piRadians * index * (2*this.piRadians/particleNumber));
 
         explosionParticle.style.left = x + "px";
         explosionParticle.style.top = y + "px";
-        explosionParticle.style.height = "1px";
-        explosionParticle.style.width = "1px";
-        explosionParticle.style.opacity = "0.0";
+        explosionParticle.style.boxShadow = `0 0 20px 1px ${color}`;
     }
 
     openPack() {
@@ -204,7 +204,7 @@ class OpenPacks {
         setTimeout(() => {
             this.getCards();
             this.resetOpenPackCssClasses();
-            }, 3150);
+            }, 3250);
     }
 
 	destroy() {

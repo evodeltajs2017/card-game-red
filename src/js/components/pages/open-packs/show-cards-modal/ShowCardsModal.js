@@ -1,14 +1,13 @@
-const marginLeftModal = 650;
-const marginTopModal = 250;
-const radius = 315;
-const pi = 3.14;
-const piRadians = 180;
-
 class ShowCardsModal{
 
     constructor(container, refreshCallback) {
         this.container = container;
         this.refreshCallback = refreshCallback;
+        this.marginLeftModal = 650;
+        this.marginTopModal = 250;
+        this.radius = 315;
+        this.pi = 3.14;
+        this.piRadians = 180;
     }
 
     initialize() {
@@ -42,8 +41,8 @@ class ShowCardsModal{
     }
 
     setCardStyle(card, cardsNumber, index){
-        let x = marginLeftModal + (radius + 100) * Math.sin(pi / piRadians * index * (2*piRadians/cardsNumber));
-        let y = marginTopModal + radius * Math.cos(pi / piRadians * index * (2*piRadians/cardsNumber));
+        let x = this.marginLeftModal + (this.radius + 100) * Math.sin(this.pi / this.piRadians * index * (2*this.piRadians/cardsNumber));
+        let y = this.marginTopModal + this.radius * Math.cos(this.pi / this.piRadians * index * (2*this.piRadians/cardsNumber));
 
         card.domElement.style.position = "absolute";
         card.domElement.style.left = x + "px";

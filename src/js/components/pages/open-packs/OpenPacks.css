@@ -141,10 +141,18 @@ body{
 }
 
 .explosion-pixel{
-    height: 15px;
-    width: 15px;
+    height: 1px;
+    width: 1px;
     top: 355px;
     left: 355px;
     position: absolute;
+    border-radius: 50%;
+    border: 1px transparent;
     transition: all 1.5s ease-out;
+}
+
+.open-packs-container .particles-div{
+    width: 720px;
+    height: 720px;
+    position: relative;
 }
