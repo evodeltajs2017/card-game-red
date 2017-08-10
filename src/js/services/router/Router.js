@@ -28,7 +28,7 @@ class Router {
 
 			this.container.innerHTML = "";
 
-			this.currentComponent = new route.component(this.container);
+			this.currentComponent = new route.component(this.container, this);
 			this.currentComponent.initialize();
 		}
 	}
