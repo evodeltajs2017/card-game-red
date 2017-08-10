@@ -1,4 +1,5 @@
 const sql = require("mssql");
+const CardValidations = require("./CardValidations");
 
 class AddCardRoute {
 	constructor(expressApp) {
@@ -7,52 +8,65 @@ class AddCardRoute {
 
 	initialize() {
 
-		this.configureConnection();
-		this.insertCardInDb();
-	}
+		this.postRequest( (data, res) => {
+			const validation = new CardValidations();
 
-	configureConnection() {
-		const config = {
-			user: "test",
-			password: "test",
-			server: "localhost",
-			database: "CardGame",
-			port: 50217
-		};
+			validation.isNameUnique = (data, (data, callback) => { this.isNameUnique(data, callback); });
 
-		return config;
-	}
+			validation.validateCard( (newCard) => {
 
-	insertCardInDb() {
-		const config = this.configureConnection();
-
-		this.app.post("/add-card-type", (req, res) => {
-			sql.connect(config, err => {
-				if (err) {
-					res.status(500).send(err);
-					sql.close();
+				if (newCard === data) {
+					console.log("no!");
+					this.insertCardInDb(data, res);
+				} else {
+					console.log(newCard);
+					res.json(newCard);
 				}
+			}, data);
+		})
+		
+		// this.postRequest( (data,res) => {
+		// 	console.log(this.getCard();
+		// });
+		
+	}
 
-				return res;
+	postRequest(callback) {
+		this.app.post("/add-card-type", (req, res) => { callback(req.body, res); });
+	}
 
-				// new sql.Request().query(`INSERT dbo.CardType(Name, Cost, Damage, Health, ImageIdentifier)  
-				// 					    VALUES('University', 4, 4, 3,'fa-university'),
-				// 						('Car', 3, 3, 2,'fa-car'),
-				// 						('Bell', 1, 0, 0,'fa-bell-o'),
-				// 						('Cubes', 5, 3, 2,'fa-cubes'),
-				// 						('Gift', 3, 1, 0,'fa-gift');
-				// 						GO`, 
-				// 						(err, result) => {
-				// 							res.send();
-				// 							sql.close();
-				// 						});
+	// getCard(card, callback) {
+	// 	callback(card);
+	// }
+	
+	insertCardInDb(data, res) {
+
+		new sql.Request().query(
+			`INSERT INTO [dbo].[CardType] (Name, Cost, Damage, Health, ImageIdentifier) 
+			VALUES('${data.Name}', ${data.Cost}, ${data.Damage}, ${data.Health}, '${data.ImageIdentifier}');`, 
+			(err, result) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				res.json("Card added successfully!");
 			});
+	}
 
-			sql.on("error", err => {
-				res.status(500).send(err);
-				sql.close();
+	isNameUnique(name, callback) {
+		new sql.Request().query(
+			`SELECT Name FROM [dbo].[CardType] WHERE Name LIKE '${name}';`,
+			(err, result) => {
+				if (err) {
+					console.log(err);
+					return;
+				} 
+				if (result.recordset.length > 0) {
+					callback(false);
+				} else {
+					callback(true);
+				}
 			});
-		});
 	}
 }
 

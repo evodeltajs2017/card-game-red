@@ -1,6 +1,15 @@
+html, body {
+    margin:0;
+    padding:0;    
+}
+/** {
+	border: 2px solid red;
+}*/
+
 .add-card-type-header {
 	border-bottom: 3px solid #ccc;
 	width: 100%;
+	height: 100px;
 }
 
 .add-card-type-title {
@@ -11,112 +20,159 @@
 
 .add-card-type-buttons {
 	display: inline-block;
-	width: 24%;
+	width: 25%;
+}
+
+.add-card-type-buttons button:hover {
+	cursor: pointer;
 }
 
 .add-card-type-content {
-	border: 1px solid black;
+	background-image: url("https://i.ytimg.com/vi/DGPsaTgSzYQ/maxresdefault.jpg");
+	background-size: 100% 100%;
+    background-repeat: no-repeat;
 	float: left;
 	width: 100%;
+	height: calc(100vh - 130px);
 }
 
 /*Card View*/
 .card-type-view-container {
-	border: 1px solid red;
+	position: relative;
 	display: inline-block;
 	float: left;
-	margin: 80px 0 80px 0;
+	margin: 80px 0 0 0;
 	width: 60%;
-	height: 100%;
+	height: calc(100vh - 210px);;
 }
 
 .card-type-view {
-	background: #ccc;
+	background-image: url("https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/37d12f2eb9389b50bd0f455b8735e5dde6116ec3.jpg");
+	background-size: 100% 100%;
 	position: relative;
 	width: 50%;
-	height: 500px;
+	height: 80%;
 	margin: 0 auto;
 }
 
-.card-image {
-	background: yellow;
+.card-num {
 	border-radius: 50%;
-	margin: 0 auto;
-	position: relative;
-	width: 200px;
-	height: 200px;
-	top: 15%;
-}
-
-.card-cost {
-	border: 1px solid blue;
-	border-radius: 50%;
-	position: absolute;
+	font-size: 80px;
+	color: #eee;
 	text-align: center;
+	text-shadow: 3px 0 black, 3px 0 black, 3px 0 black, 3px 0 black;
 	line-height: 50px;
+	position: absolute;
 	width: 50px;
 	height: 50px;
-	left: -25px;
-	top: -25px;
-}
-
-.card-damage {
-	border: 1px solid red;
-	border-radius: 50%;
-	position: absolute;
-	text-align: center;
-	line-height: 50px;
-	width: 50px;
-	height: 50px;
-	right: -25px;
-	bottom: -25px;
-}
-
-.card-health {
-	border: 1px solid green;
-	border-radius: 50%;
-	position: absolute;
-	text-align: center;
-	line-height: 50px;
-	width: 50px;
-	height: 50px;
-	left: -25px;
-	bottom: -25px;
 }
 
 .card-name {
-	background: yellow;
-	margin: auto auto;
-	position: absolute;
-	width: 300px;
-	left: 25%;
-	top: 75%;
+	margin: 0 auto;
+	position: relative;
+	max-width: 300px;
+	bottom: -35%;
 }
 
 .card-name h2 {
 	text-align: center;
 }
 
+.card-image {
+	border-radius: 50%;
+	margin: 0 auto;
+	position: relative;
+	max-width: 200px;
+	height: 200px;
+	text-align: center;
+	vertical-align: middle;
+	top: 15%;
+}
+
+.card-image i {
+	position: relative;
+	top: 30%;
+	left: 8%;
+}
+
+.card-cost {
+	left: 55px;
+	top: 35px;
+}
+
+.card-damage {
+	left: 60px;
+	bottom: 25px;
+}
+
+.card-health {
+	right: 25px;
+	bottom: 25px;
+}
+
 /*Form*/
 .card-type-form {
-	border: 1px solid green;
 	display: inline-block;
 	float: left;
-	margin: 10px 0 10px 0;
-	width: 39%;
+	position: relative;
+	margin: 80px 5% 0 0;
+	width: 35%;
+	height: calc(100vh - 210px);
 }
 
-.card-type-form > form > label {
-	border: 1px solid yellow;
+.card-field {
+	position: relative;
+	padding: 2% 0 8% 0;
+	width: 100%;
+}
+
+.card-field > label {
 	float: left;
-	margin: 5px 10px 5px 0;
-	width: 40%;
+	margin: 5px 1% 5px 0;
+	font-size: 24px;
+	text-align: right;
+	width: 19%;
 }
 
-.card-type-form > form > input {
-	border: 1px solid blue;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	width: 58%;
+.card-field > input, .card-field > select {
+	padding: 5px 0 5px 0;
+	width: 80%;
 }
 
+.card-field > input:out-of-range {
+	background-color: red;
+}
+
+.card-field .error {
+    visibility: hidden;
+    width: 120px;
+    background-color: #900;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 52%;
+    left: 25%;
+    margin-left: -10px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.card-field .error::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #900 transparent;
+}
+
+/*images*/
+.img-pattern {
+	width: 100%;
+	z-index: -1;
+}

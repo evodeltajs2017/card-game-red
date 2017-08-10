@@ -4,112 +4,89 @@ class AddCardType {
 	}
 
 	initialize() {
-		this.createDomElement();
-		this.render();
+		const domElement = new HtmlElements();
+		this.domElement = domElement.createAddCardTypeTemplate();
 		this.addEventListeners();
 	}
 
-	createDomElement() {
-		const div = document.createElement("div");
-		div.className = "add-card-type-container";
-		this.container.appendChild(div);
-		this.domElement = div;
-
-		return this.domElement;
-	}
-
-	render() {
-		const htmlTemplate =
-			`<div class="add-card-type-header">
-				<div class="add-card-type-title">
-					<h1>Add Card Type</h1>
-				</div>
-				<div class="add-card-type-buttons">
-					<button class="save-btn">Save</button>
-					<button class="cancel-btn">Cancel</button>
-				</div>
-			</div>
-			<div class="add-card-type-content">
-				<div class="card-type-view-container">
-					<div class="card-type-view">
-						<div class="card-image"></div>
-						<div class="card-cost"></div>
-						<div class="card-damage"></div>
-						<div class="card-health"></div>
-						<div class="card-name"><h2>Name</h2></div>
-					</div>
-				</div>
-				<div class="card-type-form">
-					<form action="">
-				  		<label>Name</label>
-				  		<input class="card-name-input" type="text" name="name">
-				  		<label>Cost</label>
-				  		<input class="card-cost-input" type="text" name="cost">
-				  		<label>Damage</label>
-				  		<input class="card-damage-input" type="text" name="damage">
-				  		<label>Health</label>
-				  		<input class="card-health-input" type="text" name="health">
-				  		<label>Image</label>
-				  		<input class="card-image-input" type="text" name="image">
-					</form>
-				</div>
-			</div>`;
-
-		this.domElement.innerHTML = htmlTemplate;
-	}
-
 	addEventListeners() {
-		this.domElement.querySelector(".card-name-input").addEventListener("keyup", (e) => {
-			this.domElement.querySelector(".card-name").innerHTML =
+		this.domElement.querySelector(".card-name-input").addEventListener("keyup", () => {
+			this.domElement.querySelector(".card-name h2").innerHTML =
 			this.domElement.querySelector(".card-name-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-cost-input").addEventListener("keyup", (e) => {
+		this.domElement.querySelector(".card-cost-input").addEventListener("keyup", () => {
 			this.domElement.querySelector(".card-cost").innerHTML =
 			this.domElement.querySelector(".card-cost-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-damage-input").addEventListener("keyup", (e) => {
+		this.domElement.querySelector(".card-damage-input").addEventListener("keyup", () => {
 			this.domElement.querySelector(".card-damage").innerHTML =
 			this.domElement.querySelector(".card-damage-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-health-input").addEventListener("keyup", (e) => {
+		this.domElement.querySelector(".card-health-input").addEventListener("keyup", () => {
 			this.domElement.querySelector(".card-health").innerHTML =
 			this.domElement.querySelector(".card-health-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-image-input").addEventListener("keyup", (e) => {
-			this.domElement.querySelector(".card-image").innerHTML =
-			this.domElement.querySelector(".card-image-input").value;
+		this.domElement.querySelector(".card-image-input").addEventListener("click", () => {
+			this.domElement.querySelector(".fa").className =
+			`fa ${this.domElement.querySelector(".card-image-input").value} fa-5x`;
 		}, false);
 
-		this.domElement.querySelector(".save-btn").addEventListener("click", () => { this.saveCard() }, false);
+		this.domElement.querySelector(".save-btn").addEventListener("click", () => {
+			Array.from( this.domElement.querySelectorAll(".error")).forEach( (x) => {x.style.visibility = "hidden"}, false );
+			this.displayServerResponse(this.saveCard());
+			this.domElement.querySelector(".add-card-form").reset();
+			
+		}, false);
+
+		this.domElement.querySelector(".cancel-btn").addEventListener("click", () => { 
+			this.domElement.querySelector(".add-card-form").reset();
+			Array.from( this.domElement.querySelectorAll(".error")).forEach( (x) => {x.style.visibility = "hidden"} );
+		}, false);
+		
 	}
 
 	saveCard() {
+		let card = {};
+		card.Name = this.domElement.querySelector(".card-name-input").value.trim();
+		card.Cost = parseInt(this.domElement.querySelector(".card-cost-input").value.trim(), 10);
+		card.Damage = parseInt(this.domElement.querySelector(".card-damage-input").value.trim(), 10);
+		card.Health = parseInt(this.domElement.querySelector(".card-health-input").value.trim(), 10);
+		card.ImageIdentifier = this.domElement.querySelector(".card-image-input").value.trim();
+
+		// let validation = new CardValidations(card);
+		// let validCard = validation.validateCard(card);
+		// let validationMessage = new ValidationMessages;
+		// return validationMessage.displayCardErrors(validCard);
 		
-		let cardDataArr = [];
+		return card;
+	}
 
-		let name = this.domElement.querySelector(".card-name-input").value;
-		let cost = this.domElement.querySelector(".card-cost-input").value;
-		let damage = this.domElement.querySelector(".card-damage-input").value;
-		let health = this.domElement.querySelector(".card-health-input").value;
-		let image = this.domElement.querySelector(".card-image-input").value;
+	displayServerResponse(data) {
+		const cardType = new CardTypeRepository();
 
-		cardDataArr.push({'Name': name, 'Cost': cost, 'Damage': damage, 'Health': health, 'Image': image});
+		// cardType.postCardType(data, (status, response) => {
 
-		// const postCardType = new CardTypeRepository();
-		// postCardType.postCardType((status, cardDaraArr) => {
 		// 	if (status !== 200) {
-		// 		alert("Card not added");
+		// 		alert("Server error!");
 		// 	} else {
-		// 		alert("Card added successfully");
+		// 		alert(response);
 		// 	}
 		// });
-		// let test = new CardTypeRepository();
-		// test.postCardType();
-		return cardDataArr;
+
+		// cardType.postCardType(data).then( 
+		// 	(response) => {
+		// 		alert(response);
+		// 	});
+
+		cardType.postCardType(data).then( 
+			(response) => {
+				let validationMessage = new ValidationMessages;
+				return validationMessage.displayCardErrors(JSON.parse(response));
+			});
 	}
 
 	destroy() {
