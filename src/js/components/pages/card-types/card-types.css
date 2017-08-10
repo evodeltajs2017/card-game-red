@@ -1,14 +1,10 @@
-.card-types {
-	padding: 64px;
-}
-
 .card-types .header {
-	border-bottom-width: 2px;
-	border-bottom-color: black;
-	border-bottom-style: solid;
+	padding-top: 20px;
+	border-bottom: 3px solid #ccc;
+	box-shadow: 0px 10px 15px -9px rgba(170,170,170,1);
+	width: 100%;
 	text-align: center;
 	display: flex;
-	width: 100%;
 }
 
 .card-types .search {
@@ -25,6 +21,11 @@
 .card-types table, .card-types td, .card-types th {
 	border: 2px solid #ddd;
 	text-align: center;
+}
+
+.card-types th{
+	padding: 12px;
+	box-shadow: inset 0px 0px 20px 1px #aaa;
 }
 
 .card-types table {
@@ -48,3 +49,10 @@
 	margin: 4px;
 }
 
+.searchButton, .searchField{
+	display: inline-block;
+	background: #fff;
+	border: 1px solid black;
+	padding: 10px;
+	font-family: Aclonica, serif;
+}

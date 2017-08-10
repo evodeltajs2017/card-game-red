@@ -1,3 +1,17 @@
 * {
 	box-sizing: border-box;
 }
+
+body{
+	background-color: #333  ;
+	color: darkorange;
+	font-family: Aclonica;
+}
+
+button{
+	display: inline-block;
+	background: #fff;
+	border: 1px solid black;
+	padding: 10px;
+	font-family: Aclonica, serif;
+}
