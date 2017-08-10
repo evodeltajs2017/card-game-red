@@ -148,6 +148,7 @@ class CardTypes {
 				} else {
 					alert(`The card type with the id ${cardTypeId} was already deleted.`);
 				}
+				this.currentPage = 1;
 				this.requestPromise();
 			}).catch((reason) => {
 				console.log("Error", reason.statusText);

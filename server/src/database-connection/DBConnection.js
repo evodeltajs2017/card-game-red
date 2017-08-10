@@ -6,7 +6,7 @@ class DBConnection{
             password: "test",
             server: "localhost",
             database: "CardGame",
-            port: 50979
+            port: 50209
         });
     }
 
