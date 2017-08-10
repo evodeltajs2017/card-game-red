@@ -10,34 +10,23 @@ class AddCardRoute {
 
 		this.postRequest( (data, res) => {
 			const validation = new CardValidations();
-
 			validation.isNameUnique = (data, (data, callback) => { this.isNameUnique(data, callback); });
+			validation.validateCard(data, (newCard) => {	
 
-			validation.validateCard( (newCard) => {
-
-				if (newCard === data) {
-					console.log("no!");
-					this.insertCardInDb(data, res);
-				} else {
-					console.log(newCard);
+				if (newCard._error === true) {	
 					res.json(newCard);
+				} else {
+					this.insertCardInDb(data, res);
 				}
-			}, data);
+			});
+
 		})
-		
-		// this.postRequest( (data,res) => {
-		// 	console.log(this.getCard();
-		// });
 		
 	}
 
 	postRequest(callback) {
 		this.app.post("/add-card-type", (req, res) => { callback(req.body, res); });
 	}
-
-	// getCard(card, callback) {
-	// 	callback(card);
-	// }
 	
 	insertCardInDb(data, res) {
 
@@ -49,7 +38,7 @@ class AddCardRoute {
 					console.log(err);
 					return;
 				}
-				res.json("Card added successfully!");
+				res.json("success");
 			});
 	}
 

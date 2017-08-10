@@ -47,7 +47,7 @@ html, body {
 }
 
 .card-type-view {
-	background-image: url("https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/37d12f2eb9389b50bd0f455b8735e5dde6116ec3.jpg");
+	background-image: url("http://www.hearthcards.net/card_js_templates/card_minion_neutral.png");
 	background-size: 100% 100%;
 	position: relative;
 	width: 50%;
@@ -96,13 +96,13 @@ html, body {
 }
 
 .card-cost {
-	left: 55px;
-	top: 35px;
+	left: 10%;
+	top: 5%;
 }
 
 .card-damage {
-	left: 60px;
-	bottom: 25px;
+	left: 10%;
+	bottom: 5%;
 }
 
 .card-health {
@@ -145,7 +145,7 @@ html, body {
 
 .card-field .error {
     visibility: hidden;
-    width: 120px;
+    width: 240px;
     background-color: #900;
     color: #fff;
     text-align: center;

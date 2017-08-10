@@ -1,7 +1,7 @@
 const contentContainer = document.querySelector(".content-container");
 const router = new Router(contentContainer);
 
-router.addRoute("/", AddCardType);
+router.addRoute("/", Dashboard);
 router.addRoute("/add-card-type", AddCardType);
 router.addRoute("/card-types", CardTypes);
 router.addRoute("/open-packs", OpenPacks);

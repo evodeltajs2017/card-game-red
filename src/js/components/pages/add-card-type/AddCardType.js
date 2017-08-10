@@ -1,6 +1,7 @@
 class AddCardType {
-	constructor(container) {
+	constructor(container, router) {
 		this.container = container;
+		this.router = router;
 	}
 
 	initialize() {
@@ -37,19 +38,18 @@ class AddCardType {
 
 		this.domElement.querySelector(".save-btn").addEventListener("click", () => {
 			Array.from( this.domElement.querySelectorAll(".error")).forEach( (x) => {x.style.visibility = "hidden"}, false );
-			this.displayServerResponse(this.saveCard());
-			this.domElement.querySelector(".add-card-form").reset();
-			
+			this.saveCard( (card) => { this.displayServerResponse(card) })
 		}, false);
 
 		this.domElement.querySelector(".cancel-btn").addEventListener("click", () => { 
 			this.domElement.querySelector(".add-card-form").reset();
 			Array.from( this.domElement.querySelectorAll(".error")).forEach( (x) => {x.style.visibility = "hidden"} );
+			this.router.go("/");
 		}, false);
 		
 	}
 
-	saveCard() {
+	saveCard(callback) {
 		let card = {};
 		card.Name = this.domElement.querySelector(".card-name-input").value.trim();
 		card.Cost = parseInt(this.domElement.querySelector(".card-cost-input").value.trim(), 10);
@@ -57,35 +57,31 @@ class AddCardType {
 		card.Health = parseInt(this.domElement.querySelector(".card-health-input").value.trim(), 10);
 		card.ImageIdentifier = this.domElement.querySelector(".card-image-input").value.trim();
 
-		// let validation = new CardValidations(card);
-		// let validCard = validation.validateCard(card);
-		// let validationMessage = new ValidationMessages;
-		// return validationMessage.displayCardErrors(validCard);
+		let validation = new CardValidations(card);
+		validation.validateCard(card, (errorCard) => {
+			let validationMessage = new ValidationMessages;
+
+	        if (errorCard._error) {
+	        	validationMessage.displayCardErrors(errorCard);
+	        } else {
+				callback(card);
+			}
+		});
 		
-		return card;
 	}
 
 	displayServerResponse(data) {
 		const cardType = new CardTypeRepository();
 
-		// cardType.postCardType(data, (status, response) => {
-
-		// 	if (status !== 200) {
-		// 		alert("Server error!");
-		// 	} else {
-		// 		alert(response);
-		// 	}
-		// });
-
-		// cardType.postCardType(data).then( 
-		// 	(response) => {
-		// 		alert(response);
-		// 	});
-
-		cardType.postCardType(data).then( 
+		cardType.postCardType(data).then(
 			(response) => {
-				let validationMessage = new ValidationMessages;
-				return validationMessage.displayCardErrors(JSON.parse(response));
+				if (response.indexOf("success") >= 0) {
+					alert("Card added successfully!");
+					this.router.go("/card-types");
+				} else {
+					let validationMessage = new ValidationMessages;
+					return validationMessage.displayCardErrors(JSON.parse(response));
+				}
 			});
 	}
 

@@ -35,6 +35,7 @@ class HtmlElements {
 					  		<label>Name</label>
 					  		<input class="card-name-input" type="text" name="name" autofocus required>
 					  		<span class="error"></span>
+					  		<span class="error unique"></span>
 				  		</div>
 				  		<div class="card-field">
 					  		<label>Cost</label>

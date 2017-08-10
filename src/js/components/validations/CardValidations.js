@@ -1,10 +1,8 @@
 class CardValidations {
-	constructor(object) {
-		this.object = object;
+	constructor() {
 	}
 
-	validateCard() {
-		let card = this.object;
+	validateCard(card, callback) {
 		let key = null;
 		for (key in card) {
 		    if (card.hasOwnProperty(key) && key !== undefined) {
@@ -13,21 +11,25 @@ class CardValidations {
 		    		if (card[key] === "") 
 		    		{
 	    				card[key] = `${key} cannot be empty`;
+	    				card._error = true;
 	    			} 
 	    			else if (card[key].length > 30) 
 	    			{
-	    				card[key] = "Card name too long";
+	    				card[key] = "card name too long";
+	    				card._error = true;
 	    			}
-	    			else if ((key === "Name" || key === "ImageIdentifier") && !isNaN(card[key])) 
+	    			else if ((key === "Name" || key === "ImageIdentifier") && /\d/.test(card[key])) 
 	    			{
-	    				card[key] = `${key} cannot be number`;
-	    			} 
+	    				card[key] = `${key} cannot be or contain a number`;
+	    				card._error = true;
+	    			}
 	    		} 
-	    		else if (typeof card[key] === "number") 
+	    		else if (typeof card[key] === "number" || card[key] === null)
 	    		{
-					if(card[key] < 0 || card[key] > 10 || isNaN(card[key]))
+					if(card[key] < 0 || card[key] > 10 || isNaN(card[key]) || card[key] === null || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/.test(card[key]))
 					{
 			    		card[key] = `${key} not valid. Please select a number between 0 and 10`;
+			    		card._error = true;
 			    	} 
 			    	else 
 			    	{
@@ -36,10 +38,16 @@ class CardValidations {
 			    }
 		    }
 		}
-		return card;
+		this.isNameUnique(card.Name, (isUnique) => {
+			if (isUnique === false) {
+				card.Unique = "This name is already taken. Please choose another one."
+				card._error = true;
+			}
+			callback(card);
+		});
 	}
 
-	isNameUnique() {
-		return true;
+	isNameUnique(name, callback) {
+		callback(true);
 	}
 }
