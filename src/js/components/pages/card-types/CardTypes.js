@@ -20,7 +20,7 @@ class CardTypes {
 		divMain.innerHTML = 
 		`<div class="card-types">
 			<div class="header">
-				<h1 class="title">View card types</h1>
+				<div class="title"><h1>View card types</h1></div>
 				<div class="search">
 					<input type="text" class="searchField" placeholder="Search"></input>
 					<input type="submit" class="searchButton"></input>

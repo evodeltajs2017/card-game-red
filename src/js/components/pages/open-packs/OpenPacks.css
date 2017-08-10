@@ -13,7 +13,6 @@
     padding-left: 5%;
     width: 70%;
     font-size: 20px;
-
 }
 
 .open-packs-container .button {
@@ -23,6 +22,9 @@
     padding: 10px;
     width: 100px;
     font-family: Aclonica, serif;
+    position: absolute;
+    right: 300px;
+    margin-top: 35px;
 }
 
 .open-packs-container .button:disabled {
