@@ -1,9 +1,10 @@
 .centered-card-pack.card{
-    background-color: white;
     transition: top 0.7s ease-in-out, left 0.7s ease-in-out;
     top: 330px;
     left: 900px;
     animation: neonRed 1.5s ease-in-out infinite alternate;
+    background: url("../card-v2.png") no-repeat;
+    background-size: cover;
 }
 .centered-card-pack.card p{
     color: black;

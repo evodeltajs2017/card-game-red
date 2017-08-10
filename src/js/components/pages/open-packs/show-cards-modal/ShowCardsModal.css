@@ -18,3 +18,42 @@
     height: 100%;
     color: white;
 }
+
+.cards-modal p{
+    font-size: 17px;
+    margin: 0;
+    position: relative;
+    text-shadow: 2px 0 black, 2px 0 black, 2px 0 black, 2px 0 black;
+    color: #fff !important;
+}
+
+.cards-modal .card-name{
+    top: 125px;
+    text-align: center;
+}
+
+.cards-modal .card-cost{
+    left: 13px;
+    top: 12px;
+    font-weight: bold;
+}
+
+.cards-modal .card-damage{
+     left: 18px;
+     top: 140px;
+     font-size: 16px;
+     font-weight: bold;
+}
+
+.cards-modal .card-health{
+    left: 110px;
+    top: 120px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cards-modal .card-image{
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
