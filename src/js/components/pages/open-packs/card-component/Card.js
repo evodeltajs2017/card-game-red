@@ -11,9 +11,11 @@ class Card{
                             <p class="card-name">${this.cardData.Name}</p>
                             <p class="card-damage">${this.cardData.Damage}</p>
                             <p class="card-health" >${this.cardData.Health}</p>
-                            <p class="card-image">${this.cardData.ImageIdentifier}</p>`;
+                            <div class="card-img"><i class="fa"></i></div>`;
 
         this.container.appendChild(div);
         this.domElement = div;
+
+        this.domElement.querySelector(".fa").className += ` ${this.cardData.ImageIdentifier} fa-2x`;
     }
 }

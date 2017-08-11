@@ -38,7 +38,7 @@ class AddCardType {
 
 		this.domElement.querySelector(".save-btn").addEventListener("click", () => {
 			Array.from( this.domElement.querySelectorAll(".error")).forEach( (x) => {x.style.visibility = "hidden"}, false );
-			this.saveCard( (card) => { this.displayServerResponse(card) })
+			this.saveCard( (card) => { this.displayServerResponse(card)})
 		}, false);
 
 		this.domElement.querySelector(".cancel-btn").addEventListener("click", () => { 
