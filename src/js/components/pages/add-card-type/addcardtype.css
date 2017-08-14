@@ -52,70 +52,13 @@ html, body {
 	background: url("../open-packs/card.png") no-repeat;
 	border-radius: 50px;
 	background-size: contain;
-	position: relative;
+	position: absolute;
+	left: 28%;
 	width: 461px;
 	height: 767px;
 	margin: 0 auto;
 }
 
-.card-num {
-	border-radius: 50%;
-	font-size: 50px;
-	color: #eee;
-	text-align: center;
-	text-shadow: 3px 0 black;
-	line-height: 50px;
-	position: absolute;
-	width: 50px;
-	height: 50px;
-}
-
-.card-name {
-	margin: 0 auto;
-	position: relative;
-	max-width: 300px;
-	bottom: -38%;
-	text-shadow: 3px 0 black;
-}
-
-.card-name h2 {
-	text-align: center;
-	font-size: 45px;
-}
-
-.card-image {
-	border-radius: 50%;
-	font-size: 30px;
-	margin: 0 auto;
-	position: relative;
-	max-width: 200px;
-	height: 200px;
-	text-align: center;
-	vertical-align: middle;
-	top: 15%;
-	text-shadow: 3px 0 black;
-}
-
-.card-image i {
-	position: relative;
-	top: 50%;
-	left: 3%;
-}
-
-.card-cost {
-	left: 10%;
-	top: 7%;
-}
-
-.card-damage {
-	left: 12%;
-	bottom: 9%;
-}
-
-.card-health {
-	right: 12%;
-	bottom: 8%;
-}
 
 /*Form*/
 .card-type-form {

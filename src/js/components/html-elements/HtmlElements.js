@@ -22,11 +22,6 @@ class HtmlElements {
 			<div class="add-card-type-content">
 				<div class="card-type-view-container">
 					<div class="card-type-view">
-						<div class="card-image"><i class="fa" aria-hidden="true"></i></div>
-						<div class="card-cost card-num"></div>
-						<div class="card-damage card-num"></div>
-						<div class="card-health card-num"></div>
-						<div class="card-name"><h2>Name</h2></div>
 					</div>
 				</div>
 				<div class="card-type-form">

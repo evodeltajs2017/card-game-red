@@ -7,12 +7,15 @@ class AddCardType {
 	initialize() {
 		const domElement = new HtmlElements();
 		this.domElement = domElement.createAddCardTypeTemplate();
+		let card = new Card(this.domElement.querySelector(".card-type-view"), {Id: null, Name: "", Cost: "", Damage: "",
+		Health: "", ImageIdentifier: ""});
+		card.initialize();
 		this.addEventListeners();
 	}
 
 	addEventListeners() {
 		this.domElement.querySelector(".card-name-input").addEventListener("keyup", () => {
-			this.domElement.querySelector(".card-name h2").innerHTML =
+			this.domElement.querySelector(".card-name").innerHTML =
 			this.domElement.querySelector(".card-name-input").value;
 		}, false);
 
@@ -31,7 +34,7 @@ class AddCardType {
 			this.domElement.querySelector(".card-health-input").value;
 		}, false);
 
-		this.domElement.querySelector(".card-image-input").addEventListener("click", () => {
+		this.domElement.querySelector(".card-image-input").addEventListener("change", () => {
 			this.domElement.querySelector(".fa").className =
 			`fa ${this.domElement.querySelector(".card-image-input").value} fa-5x`;
 		}, false);

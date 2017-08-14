@@ -4,7 +4,7 @@ class ShowCardsModal{
         this.container = container;
         this.refreshCallback = refreshCallback;
         this.marginLeftModal = 650;
-        this.marginTopModal = 250;
+        this.marginTopModal = 200;
         this.radius = 315;
         this.pi = 3.14;
         this.piRadians = 180;
@@ -14,6 +14,7 @@ class ShowCardsModal{
         const div = document.createElement("div");
         div.className = "cards-modal";
         div.innerHTML = `<div class="modal-content"></div>`;
+        this.domElement = div;
         this.container.appendChild(div);
 
         window.addEventListener("click", (event) => {
@@ -31,8 +32,10 @@ class ShowCardsModal{
         const cardsNumber = 5;
 
         for(let i=0; i<cardsNumber ;i++){
-            const card = new Card(modalContent, cardsData[i]);
+            let card = new Card(modalContent, cardsData[i]);
             card.initialize();
+
+            Array.from(this.domElement.getElementsByClassName("card")).forEach( x => x.className += " modal-card");
 
             setTimeout(() => {
                 this.setCardStyle(card, cardsNumber, i);
