@@ -1,0 +1,269 @@
+.game-board{
+    width: 1400px;
+    height: 900px;
+    background: url("board.png") no-repeat;
+    background-size: contain;
+    position: relative;
+    z-index: 1;
+    left: -140px;
+    top: -140px;
+}
+
+.board-border {
+    position: relative;
+    width: 1000px;
+    height: 600px;
+    margin-left: 25%;
+    top: 140px;
+    animation: boardGlow 1.5s ease-in-out infinite alternate;
+    border-radius: 50px;
+}
+
+@keyframes boardGlow {
+    from {
+        box-shadow: 0 0 235px 10px rgb(151, 0, 0);
+    }
+    to {
+        box-shadow: 0 0 235px 13px #6cb499;
+    }
+}
+
+.turn-button{
+    position: absolute;
+    top: 42%;
+    left: 76%;
+    height: 75px;
+    width: 130px;
+    font-size: 15px;
+    text-align: center;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.turn-button.enemy{
+    background: url("enemy-turn-button.png") no-repeat;
+    background-size: cover;
+
+}
+
+.turn-button.player{
+    background: url("end-turn-button.png") no-repeat;
+    background-size: cover;
+
+}
+
+.turn-button:hover{
+    box-shadow: none;
+}
+
+.player-name{
+    position: absolute;
+    top: 86%;
+    left: 593px;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    text-shadow: 2px 0 #222;
+    font-size: 17px;
+    color: white;
+}
+
+.enemy-health{
+    position: absolute;
+    top: 25%;
+    color: white;
+    left: 695px;
+}
+
+.player-health{
+    position: absolute;
+    top: 760px;
+    color: white;
+    left: 695px;
+}
+
+.enemy-mana{
+    position: absolute;
+    top: 56px;
+    color: white;
+    left: 838px;
+}
+
+.player-mana{
+    position: absolute;
+    top: 824px;
+    color: white;
+    left: 866px;
+}
+
+.mana-points{
+    position: absolute;
+    top: 823px;
+    color: white;
+    left: 930px;
+    height: 23px;
+    width: 300px;
+    text-align: left;
+}
+
+.mana-point{
+    width: 23px;
+    height: 23px;
+    background: url("mana.png") no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+.used-mana-point{
+    background: url("used-mana.png") no-repeat;
+    width: 23px;
+    height: 23px;
+    background-size: contain;
+    display: inline-block;
+}
+
+.player-deck{
+    position: absolute;
+    left: 1163px;
+    top: 473px;
+    height: 130px;
+    width: 64px;
+    background: url("deck.png") no-repeat;
+    background-size: contain;
+    border-radius: 10px;
+}
+
+.enemy-deck{
+    position: absolute;
+    left: 1159px;
+    top: 236px;
+    height: 130px;
+    width: 64px;
+    background: url("deck.png") no-repeat;
+    background-size: contain;
+    border-radius: 10px;
+}
+
+.player-hand{
+    position: absolute;
+    height: 100px;
+    width: 500px;
+    top: 92%;
+    left: 400px;
+    //overflow: hidden;
+    padding-top: 10px;
+}
+
+.enemy-hand{
+    position: absolute;
+    height: 95px;
+    width: 600px;
+    left: 370px;
+    top: -22px;
+    overflow: hidden;
+    padding: 0 30px 30px 30px;
+}
+
+.enemy-card{
+    height: 305px;
+    width: 85px;
+    background: url("card-back.png") no-repeat;
+    background-size: contain;
+    border-radius: 10px !important;
+}
+
+.player-card{
+    background: url("../open-packs/card-v2.png") no-repeat;
+    background-size: contain;
+    border-radius: 10px !important;
+}
+
+.hand-card{
+    height: 130px;
+    width: 100px;
+}
+
+.hand-card:hover{
+    z-index: 10;
+    //transform: none !important;
+    //overflow: hidden;
+}
+
+.hand-card .card-image {
+    top: 25px;
+    width: 80px;
+    text-align: center;
+    color: darkorange;
+    text-shadow: 1px 0 black;
+    font-size: 15px;
+    left: 5px;
+    position: relative;
+}
+
+.hand-card .card-name{
+    top: 43px;
+    width: 80px;
+    left: 1%;
+    color: #333333 !important;
+    text-shadow: 1px 0 white;
+    text-align: center;
+    font-size: 10px;
+    position: relative;
+}
+
+.hand-card .card-cost{
+    left: 7px;
+    width: 80px;
+    text-align: left;
+    top: 7px;
+    font-size: 12px;
+    position: relative;
+}
+
+.hand-card .card-damage{
+    width: 80px;
+    top: 110px;
+    font-size: 12px;
+    left: 11px;
+    position: inherit;
+    text-align: left;
+}
+
+.hand-card .card-health{
+    width: 80px;
+    top: 110px;
+    font-size: 12px;
+    left: 68px;
+    position: inherit;
+    text-align: left;
+}
+
+.hand-card .card-num {
+    color: #eee;
+    text-shadow: 1px 0 black;
+}
+
+.enemy-played-cards{
+    position: absolute;
+    height: 140px;
+    width: 68%;
+    top: 270px;
+    left: 12%;
+    text-align: center;
+}
+
+.player-played-cards{
+    position: absolute;
+    height: 140px;
+    width: 68%;
+    top: 437px;
+    left: 12%;
+    text-align: center;
+}
+
+.card-on-board{
+    display: inline-block;
+    overflow: hidden;
+    height: 140px;
+}

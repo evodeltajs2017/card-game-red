@@ -18,4 +18,8 @@ class Card{
 
         this.domElement.querySelector(".fa").className += ` ${this.cardData.ImageIdentifier} fa-2x`;
     }
+
+    addClickEventListener(callback){
+        this.domElement.addEventListener("click",() => { callback();}, false);
+    }
 }

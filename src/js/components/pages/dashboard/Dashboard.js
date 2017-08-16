@@ -5,17 +5,34 @@ class Dashboard {
 
 	initialize() {
 		const div = document.createElement("div");
-		div.innerHTML = "<h1>dashboard</h1>";
-		this.container.appendChild(div);
+		div.className = "dashboard-container";
+		// div.innerHTML = `<div class="header-container">
+		// 					<div class="header">
+		// 						<div class="title">
+		// 							<h1>Dashboard</h1>
+		// 						</div>
+		// 					</div>
+		// 					<div class="play-button">
+		// 						<button>Start Game!</button>
+		// 					</div>
+		// 				</div>
+		// 				<div class="game-board-container"></div>`;
+		 this.container.appendChild(div);
+		 this.domElement = div;
+        //
+		// this.domElement.querySelector("button").addEventListener('click', () => {
+		// 	this.play();
+		// }, false);
 
-		// const repo = new UserRepository();
-		// repo.getUnopenedCardPacks((status, data) => {
-		// 	if (status !== 200) {
-		// 		div.innerHTML = "<h1>error</h1>";
-		// 	} else {
-		// 		console.log(status, data);
-		// 	}
-		// });
+		div.innerHTML = `<div class="game-board-container"></div>`;
+		this.play();
+
+	}
+
+	play(){
+		//this.domElement.querySelector(".header-container").innerHTML = "";
+        let gameBoard = new Game(this.domElement.querySelector(".game-board-container"));
+        gameBoard.initialize("Player name");
 	}
 
 	destroy() {

@@ -31,6 +31,10 @@ const DeleteCardType = require("./routes/view-card-types/DeleteCardTypeRoute");
 const deleteCardType = new DeleteCardType(app);
 deleteCardType.initialize();
 
+const GenerateDeckRoute = require("./routes/play-game/GenerateDeckRoute");
+const generateDeckRoute = new GenerateDeckRoute(app);
+generateDeckRoute.initialize();
+
 const DBConnection = require("./database-connection/DBConnection");
 const dbConnection = new DBConnection();
 
