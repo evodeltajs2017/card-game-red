@@ -1,16 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const bodyParser = require('body-parser');
 
 app.use(cors());
-
-var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const SampleRoute = require("./routes/sample/SampleRoute");
-const sampleRoute = new SampleRoute(app);
-sampleRoute.initialize();
+const AddCardType = require("./routes/add-card-type/AddCardRoute");
+const addCardType = new AddCardType(app);
+addCardType.initialize();
+
+const Dashboard = require("./routes/sample/SampleRoute");
+const dashboard = new Dashboard(app);
+dashboard.initialize();
 
 const NumberOfPacksRoute = require("./routes/open-packs/NumberOfPacksRoute");
 const noPacksRoute = new NumberOfPacksRoute(app);

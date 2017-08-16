@@ -1,0 +1,128 @@
+html, body {
+    margin:0;
+    padding:0;    
+}
+/** {
+	border: 2px solid red;
+}*/
+
+.add-card-type-header {
+    border-bottom: 3px solid #ccc;
+    box-shadow: 0 10px 15px -9px rgba(170,170,170,1);
+	width: 100%;
+	height: 100px;
+}
+
+.add-card-type-title {
+	display: inline-block;
+	padding-left: 5%;
+	width: 70%;
+	font-size: 20px;
+}
+
+.add-card-type-buttons {
+	display: inline-block;
+	width: 25%;
+}
+
+.add-card-type-buttons button:hover {
+	cursor: pointer;
+}
+
+.add-card-type-content {
+	//background-image: url("https://i.ytimg.com/vi/DGPsaTgSzYQ/maxresdefault.jpg");
+	//background-size: 100% 100%;
+    //background-repeat: no-repeat;
+	float: left;
+	width: 100%;
+	height: calc(100vh - 130px);
+}
+
+/*Card View*/
+.card-type-view-container {
+	position: relative;
+	display: inline-block;
+	float: left;
+	margin: 30px 0 0 0;
+	width: 60%;
+	height: calc(100vh - 210px);;
+}
+
+.card-type-view {
+	background: url("../open-packs/card.png") no-repeat;
+	border-radius: 50px;
+	background-size: contain;
+	position: absolute;
+	left: 28%;
+	width: 461px;
+	height: 767px;
+	margin: 0 auto;
+}
+
+
+/*Form*/
+.card-type-form {
+	display: inline-block;
+	float: left;
+	position: relative;
+	margin: 80px 5% 0 0;
+	width: 35%;
+	height: calc(100vh - 210px);
+}
+
+.card-field {
+	position: relative;
+	padding: 2% 0 8% 0;
+	width: 100%;
+}
+
+.card-field > label {
+	float: left;
+	margin: 5px 1% 5px 0;
+	font-size: 24px;
+	text-align: right;
+	width: 19%;
+}
+
+.card-field > input, .card-field > select {
+	padding: 5px 0 5px 0;
+	width: 80%;
+}
+
+.card-field > input:out-of-range {
+	background-color: red;
+}
+
+.card-field .error {
+    visibility: hidden;
+    width: 240px;
+    background-color: #900;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 52%;
+    left: 25%;
+    margin-left: -10px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.card-field .error::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #900 transparent;
+}
+
+/*images*/
+.img-pattern {
+	width: 100%;
+	z-index: -1;
+}
