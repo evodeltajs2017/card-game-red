@@ -59,7 +59,7 @@ class CardTypes {
 	}
 
 	initializeValues(result) {
-		this.itemsPerPage = result.cardTypes.length;
+		this.itemsPerPage = result.items.length;
 		this.totalItems = result.count;
 		this.totalPages = parseInt(this.totalItems / 10);
 		if (this.totalItems % 10 > 0) {
@@ -78,7 +78,7 @@ class CardTypes {
 				<th>Actions</th>
 			</tr>`;
 		for (let i = 0; i < this.itemsPerPage; i++) {
-			let cardType = data.cardTypes[i];
+			let cardType = data.items[i];
 			table += `<tr><td>${cardType.Id}</td>
 			<td>${cardType.Name}</td>
 			<td>${cardType.Cost}</td>

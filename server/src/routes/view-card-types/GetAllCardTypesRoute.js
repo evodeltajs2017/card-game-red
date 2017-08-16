@@ -23,7 +23,7 @@ class GetAllCardTypesRoute {
 				new sql.Request().query(`select * from [dbo].[CardType]${paramCheck.query} order by [Id] desc OFFSET ${index} ROWS FETCH NEXT 10 ROWS ONLY`, (err, result) => {
 					res.json({
 						count,
-					 	cardTypes: result.recordset,
+					 	items: result.recordset,
 					 	test: paramCheck.query
 					});
 				});

@@ -7,7 +7,8 @@ class Navbar {
 			{ name: "Dashboard", url: "/" },
 			{ name: "Add card type", url: "/add-card-type" },
 			{ name: "View card types", url: "/card-types" },
-			{ name: "Open card packs", url: "/open-packs" }
+			{ name: "Open card packs", url: "/open-packs" },
+			{ name: "Reusable grid", url: "/grid" }
 		];
 	}
 
