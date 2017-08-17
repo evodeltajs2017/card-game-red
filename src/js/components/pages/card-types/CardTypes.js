@@ -2,51 +2,142 @@ class CardTypes {
 
 	constructor(container) {
 		this.container = container;
-		this.grid = undefined;
+		this.itemsPerPage = undefined;
+		this.currentPage = undefined;
+		this.totalItems = undefined;
+		this.totalPages = undefined;
 	}
 
 	initialize() {
-		this.grid = new Grid(this.container, `View decks`, `http://localhost:3000/view-card-types`,
-			[{
-				fieldName: "id",
-				displayName: "ID",
-				render: (rawData, i) => `<div>${rawData.Id}</div>`
-			}, {
-				fieldName: "name",
-				displayName: "Name",
-				render: (rawData, i) => `<div>${rawData.Name}</div>`
-			}, {
-				fieldName: "cost",
-				displayName: "Cost",
-				render: (rawData, i) => `<div>${rawData.Cost}</div>`
-			}, {
-				fieldName: "damage",
-				displayName: "Damage",
-				render: (rawData, i) => `<div>${rawData.Damage}</div>`
-			}, {
-				fieldName: "health",
-				displayName: "Health",
-				render: (rawData, i) => `<div>${rawData.Health}</div>`
-			}, {
-				fieldName: "actions",
-				displayName: "Actions",
-				render: (rawData, i) => `<button type="button" data-internalid="${rawData.Id}" class="edit${i}">Edit</button><button type="button" data-internalid="${rawData.Id}" class="delete${i}">Delete</button>`,
-				listener: (i) => this.setEventListeners(i)
-			}]);
-		this.grid.initialize();
+		this.createMainContainer();
+		this.currentPage = 1;
+		this.requestPromise();
+		this.setEventListenersForSearch();
 	}
 
-	setEventListeners(i) {
-		document.querySelector(`.grid-container .edit${i}`).addEventListener("click", (e) => { this.getMessageForEdit(i); }, false);
-		document.querySelector(`.grid-container .delete${i}`).addEventListener("click", (e) => { this.deleteCardType(i); }, false);
+	createMainContainer() {
+		const divMain = document.createElement("div");
+		divMain.innerHTML = 
+		`<div class="card-types">
+			<div class="header">
+				<div class="title"><h1>View card types</h1></div>
+				<div class="search">
+					<input type="text" class="searchField" placeholder="Search"></input>
+					<input type="submit" class="searchButton"></input>
+				</div>
+			</div> 
+			<div class="content"></div>
+		</div>`;
+		this.container.appendChild(divMain);
 	}
 
-	getMessageForEdit(i) {
-		console.log(`Pressed edit button for the card type with the id ${document.querySelector(`.grid-container .edit${i}`).getAttribute("data-internalid")}`);
+	requestPromise(searchName) {
+		const cardTypesRepository = new CardTypesRepository();
+		const promise = cardTypesRepository.getCardTypes(this.currentPage, searchName);
+		promise.then((data) => {
+			this.generateContent(data, searchName);
+		}).catch((reason) => {
+			console.log("Error", reason.statusText);
+		});
 	}
 
-	deleteCardType(i) {
-		let cardTypeId = document.querySelector(`.grid-container .delete${i}`).getAttribute("data-internalid");
+	getSearchField() {
+		return document.querySelector(`.card-types .searchField`);
+	}
+
+	generateContent(result, search) {
+		this.initializeValues(result);
+		let contentDiv = `
+			<div class="pages">
+				${this.getGeneratedTable(result)}
+				<div class="itemsPerPage">Showing ${this.itemsPerPage} out of ${this.totalItems} cards</div>
+				<div class="pageButtons">${this.getGeneratedPageButtons()}<div>
+			</div>`;
+		document.querySelector(".card-types .content").innerHTML = contentDiv;
+		this.setEventListenersForPageButtons(search);
+		this.setEventListenersForAdminButtons();
+	}
+
+	initializeValues(result) {
+		this.itemsPerPage = result.items.length;
+		this.totalItems = result.count;
+		this.totalPages = parseInt(this.totalItems / 10);
+		if (this.totalItems % 10 > 0) {
+			this.totalPages++;
+		}
+	}
+
+	getGeneratedTable(data) {
+		let table = `<table>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Cost</th>
+				<th>Damage</th>
+				<th>Health</th>
+				<th>Actions</th>
+			</tr>`;
+		for (let i = 0; i < this.itemsPerPage; i++) {
+			let cardType = data.items[i];
+			table += `<tr><td>${cardType.Id}</td>
+			<td>${cardType.Name}</td>
+			<td>${cardType.Cost}</td>
+			<td>${cardType.Damage}</td>
+			<td>${cardType.Health}</td>
+			<td>${this.getGeneratedAdminButtons(i, cardType.Id)}</td></tr>`;
+		}
+		table += `</table>`;
+		return table;
+	}
+
+	getGeneratedAdminButtons(id, data) {
+		return `<button type="button" data-internalid="${data}" class="edit${id}">Edit</button><button type="button" data-internalid="${data}" class="delete${id}">Delete</button>`
+	}
+
+	getGeneratedPageButtons() {
+		let pageButtons = "";
+		for (let i = 1; i <= this.totalPages; i++) {
+			if (this.currentPage == i) {
+				pageButtons += `<button disabled>${i}</button>`;
+			} else {
+				pageButtons += `<button class="pageButton${i}">${i}</button>`;
+			}
+		}
+		return pageButtons;
+	}
+
+	setEventListenersForPageButtons(search) {
+		for (let i = 1; i <= this.totalPages; i++) {
+			if (i != this.currentPage) {
+				document.querySelector(`.card-types .pageButton${i}`).addEventListener("click", (e) => { 
+					this.currentPage = i;
+					this.requestPromise(search);
+				 }, false);
+			}
+		}
+	}
+
+	setEventListenersForAdminButtons() {
+		for (let i = 0; i < this.itemsPerPage; i++) {
+			this.getAdminEditButton(i).addEventListener("click", (e) => { this.getMessageForEdit(i); }, false);
+			this.getAdminDeleteButton(i).addEventListener("click", (e) => { this.deleteCardType(i); }, false);
+		}
+	}
+
+	getAdminEditButton(id) {
+		return document.querySelector(`.card-types .edit${id}`);
+	}
+
+	getMessageForEdit(id) {
+		console.log(`Pressed edit button for the card type with the id ${this.getAdminEditButton(id).getAttribute("data-internalid")}`);
+	}
+
+	getAdminDeleteButton(id) {
+		return document.querySelector(`.card-types .delete${id}`);
+	}
+
+	deleteCardType(id) {
+		let cardTypeId = this.getAdminDeleteButton(id).getAttribute("data-internalid");
 		if (confirm(`Are you sure you want to delete the card type with the id ${cardTypeId}?`)) {
 			const cardTypesRepository = new CardTypesRepository();
 			const promise = cardTypesRepository.deleteCardType(cardTypeId);
@@ -57,11 +148,29 @@ class CardTypes {
 				} else {
 					alert(`The card type with the id ${cardTypeId} was already deleted.`);
 				}
-				this.grid.generateGrid();
+				this.currentPage = 1;
+				this.requestPromise();
 			}).catch((reason) => {
 				console.log("Error", reason.statusText);
 			});
 		}
+	}
+
+	setEventListenersForSearch() {
+		document.querySelector(`.card-types .searchButton`).addEventListener("click", (e) => { 
+			this.onSearch();
+		}, false);
+		this.getSearchField().addEventListener("keyup", (e) => {
+		    if (e.keyCode == 13) {
+		        this.onSearch();
+		    }
+		});
+	}
+
+	onSearch() {
+		this.currentPage = 1;
+		this.requestPromise(this.getSearchField().value);
+		this.getSearchField().value = "";
 	}
 
 	destroy() {

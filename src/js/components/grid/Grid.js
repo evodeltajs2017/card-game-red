@@ -1,10 +1,11 @@
 class Grid {
 
-	constructor(container, pageName, url, fields) {
+	constructor(container, pageName, url, fields, searchField) {
 		this.container = container;
 		this.pageName = pageName;
 		this.url = url;
 		this.fields = fields;
+		this.searchField = searchField;
 		this.itemsPerPage = undefined;
 		this.currentPage = undefined;
 		this.totalItems = undefined;
@@ -24,19 +25,15 @@ class Grid {
 				</div> 
 				<div class="content"></div>
 			</div>`;
+		this.currentPage = 1;
 		this.container.appendChild(divMain);
-		this.generateGrid();
+		this.requestPromise();
 		this.setEventListenersForSearch();
 	}
 
-	generateGrid(searchField) {
-		this.currentPage = 1;
-		this.requestPromise(searchField);
-	}
-
-	requestPromise(searchField) {
+	requestPromise() {
 		const gridRepository = new GridRepository();
-		const promise = gridRepository.getGridForUrl(this.url, this.currentPage, searchField);
+		const promise = gridRepository.getGridForUrl(this.url, this.currentPage, this.searchField);
 		promise.then((data) => {
 			this.generateContent(data);
 		}).catch((reason) => {
@@ -52,9 +49,8 @@ class Grid {
 				<div class="itemsPerPage">Showing ${this.itemsPerPage} out of ${this.totalItems}</div>
 				<div class="pageButtons">${this.getGeneratedPageButtons()}<div>
 			</div>`;
-		document.querySelector(`.grid-container .content`).innerHTML = contentDiv; 
+		document.querySelector(`.grid-container .content`).innerHTML = contentDiv;
 		this.setEventListenersForPageButtons();
-		this.setEventListeners();
 	}
 
 	initializeValues(count) {
@@ -78,7 +74,7 @@ class Grid {
 		for (let i = 0; i < this.itemsPerPage; i++) {
 			table += `<tr>`;
 			for (let j = 0; j < this.fields.length; j++) {
-				table += `<td${this.getColumnWidth(j)}>${this.fields[j].render(data.items[i], i)}</td>`;
+				table += `<td${this.getColumnWidth(j)}>${this.fields[j].render(data.items[i])}</td>`;
 			}
 			table += `</tr>`;
 		}
@@ -112,16 +108,6 @@ class Grid {
 					this.currentPage = i;
 					this.requestPromise();
 				 }, false);
-			}
-		}
-	}
-
-	setEventListeners() {
-		for (let i = 0; i < this.fields.length; i++) {
-			if (this.fields[i].listener !== undefined) {
-				for (let j = 0; j < this.itemsPerPage; j++) {
-					this.fields[i].listener(j);
-				}
 			}
 		}
 	}
