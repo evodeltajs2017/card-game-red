@@ -31,6 +31,18 @@ const DeleteCardType = require("./routes/view-card-types/DeleteCardTypeRoute");
 const deleteCardType = new DeleteCardType(app);
 deleteCardType.initialize();
 
+const GetDeckRoute = require("./routes/view-deck/GetDeckRoute");
+const getDeckRoute = new GetDeckRoute(app);
+getDeckRoute.initialize();
+
+const DeleteDeckRoute = require("./routes/view-deck/DeleteDeckRoute");
+const deleteDeckRoute = new DeleteDeckRoute(app);
+deleteDeckRoute.initialize();
+
+const EditDeckRoute = require("./routes/view-deck/EditDeckRoute");
+const editDeckRoute = new EditDeckRoute(app);
+editDeckRoute.initialize();
+
 const DBConnection = require("./database-connection/DBConnection");
 const dbConnection = new DBConnection();
 
