@@ -1,0 +1,52 @@
+.add-deck-container button {
+	margin: 4px;
+}
+
+.add-deck-container .header {
+	padding-top: 5px;
+	border-bottom: 3px solid #ccc;
+	box-shadow: 0px 10px 15px -9px rgba(170,170,170,1);
+	width: 100%;
+	display: flex;
+}
+
+.add-deck-container .title {
+	width: 70%;
+	margin-left: 5%;
+}
+
+.add-deck-container .title h1 {
+	font-size: 40px;
+	margin-top: 22px;
+}
+
+.add-deck-container .buttons {
+	position: absolute;
+	right: 64px;
+	margin-top: 30px;
+}
+
+.add-deck-container .content {
+	height: 100%;
+	width: 100%;
+}
+
+.add-deck-container .available-cards {
+	width: 70%;
+	height: 100%;
+	border-right: 3px solid #ccc;
+	float: left;
+	box-shadow: 15px 0px 10px -9px rgba(170,170,170,1);
+}
+
+.add-deck-container .choosed-cards {
+	width: 30%;
+	height: 100%;
+	border-left: 3px solid #ccc;
+	float: right;
+	box-shadow: -15px 0px 10px -9px rgba(170,170,170,1);
+}
+
+.add-deck-container {
+	height: 500px;
+}
