@@ -21,10 +21,10 @@ class DeleteCardTypeRoute {
 				} else {
 					new sql.Request().query(`delete from [dbo].[Card] where [CardTypeId] = ${cardTypeId}`, (err, result) => {
 						let countCards = result.rowsAffected[0];
-						res.json({
-							isCardType,
-							countCards,
-						});
+							res.json({
+								isCardType,
+								countCards,
+							});
 					});
 				}
 			});
