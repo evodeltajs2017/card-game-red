@@ -1,4 +1,4 @@
-class CardTypes {
+class ViewDecks {
 
 	constructor(container) {
 		this.container = container;
@@ -16,18 +16,6 @@ class CardTypes {
 				displayName: "Name",
 				render: (rawData, i) => `<div>${rawData.Name}</div>`
 			}, {
-				fieldName: "cost",
-				displayName: "Cost",
-				render: (rawData, i) => `<div>${rawData.Cost}</div>`
-			}, {
-				fieldName: "damage",
-				displayName: "Damage",
-				render: (rawData, i) => `<div>${rawData.Damage}</div>`
-			}, {
-				fieldName: "health",
-				displayName: "Health",
-				render: (rawData, i) => `<div>${rawData.Health}</div>`
-			}, {
 				fieldName: "actions",
 				displayName: "Actions",
 				render: (rawData, i) => `<button type="button" data-internalid="${rawData.Id}" class="edit${i}">Edit</button><button type="button" data-internalid="${rawData.Id}" class="delete${i}">Delete</button>`,
@@ -42,20 +30,20 @@ class CardTypes {
 	}
 
 	getMessageForEdit(i) {
-		console.log(`Pressed edit button for the card type with the id ${document.querySelector(`.grid-container .edit${i}`).getAttribute("data-internalid")}`);
+		console.log(`Pressed edit button for the deck with the id ${document.querySelector(`.grid-container .edit${i}`).getAttribute("data-internalid")}`);
 	}
 
 	deleteCardType(i) {
 		let cardTypeId = document.querySelector(`.grid-container .delete${i}`).getAttribute("data-internalid");
-		if (confirm(`Are you sure you want to delete the card type with the id ${cardTypeId}?`)) {
+		if (confirm(`Are you sure you want to delete the deck with the id ${cardTypeId}?`)) {
 			const cardTypesRepository = new CardTypesRepository();
 			const promise = cardTypesRepository.deleteCardType(cardTypeId);
 			promise.then((data) => {
 				console.log(data);
 				if (data.isCardType == 1) {
-					alert(`Deleted the card type with the id ${cardTypeId} and deleted ${data.countCards} cards.`);
+					alert(`Deleted the deck with the id ${cardTypeId} and deleted ${data.countCards} cards.`);
 				} else {
-					alert(`The card type with the id ${cardTypeId} was already deleted.`);
+					alert(`The deck with the id ${cardTypeId} was already deleted.`);
 				}
 				this.grid.generateGrid();
 			}).catch((reason) => {
