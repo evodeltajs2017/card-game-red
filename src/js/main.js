@@ -5,7 +5,7 @@ router.addRoute("/", Dashboard);
 router.addRoute("/add-card-type", AddCardType);
 router.addRoute("/card-types", CardTypes);
 router.addRoute("/open-packs", OpenPacks);
-router.addRoute("/grid", GridTest);
+router.addRoute("/view-decks", ViewDecks);
 
 router.go("/");
 
