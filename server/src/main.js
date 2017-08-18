@@ -43,6 +43,14 @@ const EditDeckRoute = require("./routes/view-deck/EditDeckRoute");
 const editDeckRoute = new EditDeckRoute(app);
 editDeckRoute.initialize();
 
+const GetCardsRoute = require("./routes/add-deck/GetCardsRoute");
+const getCardsRoute = new GetCardsRoute(app);
+getCardsRoute.initialize();
+
+const AddDeckRoute = require("./routes/add-deck/AddDeckRoute");
+const addDeckRoute = new AddDeckRoute(app);
+addDeckRoute.initialize();
+
 const DBConnection = require("./database-connection/DBConnection");
 const dbConnection = new DBConnection();
 
