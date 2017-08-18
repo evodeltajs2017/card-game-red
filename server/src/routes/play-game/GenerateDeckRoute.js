@@ -10,8 +10,8 @@ class GenerateDeckRoute {
 
             let cards = [];
             let deck = [];
-            new sql.Request().query("select [dbo].[Card].Id as Id, [dbo].[CardType].Name, [dbo].[CardType].Cost,[dbo].[CardType].Damage," +
-                "[dbo].[CardType].Health,[dbo].[CardType].ImageIdentifier " +
+            new sql.Request().query("select [dbo].[CardType].Name, [dbo].[CardType].Cost, [dbo].[CardType].Damage," +
+                "[dbo].[CardType].Health, [dbo].[CardType].ImageIdentifier " +
                 "from [dbo].[Card] inner join [dbo].[CardType] on [dbo].[Card].CardTypeId = [dbo].[CardType].Id", (err, result) => {
                     cards = result.recordset;
                     deck = this.generateRandomDeck(cards);

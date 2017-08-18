@@ -1,12 +1,14 @@
 class Player{
-    constructor(name){
+    constructor(name, initialMana){
+        this.isAI = false;
         this.name = name;
         this.deck = [];
         this.hand = [];
-        this.maximalMana = 0;
-        this.turnMana = 0;
+        this.maximalMana = initialMana;
+        this.turnMana = initialMana;
         this.health = 30;
         this.cardsOnBoard = [];
+        this.inactiveCards = [];
         this.emptyDeckDamage = 0;
     }
 
@@ -14,34 +16,36 @@ class Player{
         this.deck = deck;
     }
 
-    getNextCard(){
+    getNextCardFromDeck(){
         let card = this.deck[Math.floor(Math.random() * this.deck.length)];
         this.deck = this.removeCardFromArray(this.deck, card);
         return card;
     }
 
     removeCardFromArray(array, card){
-        let index = -1;
-        array.forEach( (x, i) => { if (x.Id === card.Id) {
-            index = i;
-        } } );
-
-        array.splice(index, 1);
+        array.splice(array.indexOf(card), 1);
         return array;
     }
 
+    resetInactiveCards(){
+        this.inactiveCards = [];
+    }
+
+    addInactiveCard(card){
+        this.inactiveCards.push(card);
+    }
+
     damageCard(card, damage){
-        let index = -1;
-        this.cardsOnBoard.forEach( (x, i) => { if (x.Id === card.Id) {
-            index = i;
-            x.health -= damage;
-            if(x.health <= 0) {
-                this.removePlayedCard(x);
+        this.cardsOnBoard.forEach( x => { if (x === card) {
+            x.Health -= damage;
+            if(x.Health <= 0) {
+                this.removePlayedCardFromBoard(x);
             }
         } } );
     }
 
     addCardToHand(card){
+        card.isAnimatable = true;
         this.hand.push(card);
     }
 
@@ -49,7 +53,7 @@ class Player{
         this.cardsOnBoard.push(card);
     }
 
-    removePlayedCard(card){
+    removePlayedCardFromBoard(card){
         this.cardsOnBoard = this.removeCardFromArray(this.cardsOnBoard, card);
     }
 
@@ -58,7 +62,9 @@ class Player{
     }
 
     initializeManaForNewTurn(){
-        this.maximalMana++;
+        if(this.maximalMana < 10){
+            this.maximalMana++;
+        }
         this.turnMana = this.maximalMana;
     }
 

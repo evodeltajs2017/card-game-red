@@ -31,8 +31,8 @@ class Dashboard {
 
 	play(){
 		//this.domElement.querySelector(".header-container").innerHTML = "";
-        let gameBoard = new Game(this.domElement.querySelector(".game-board-container"));
-        gameBoard.initialize("Player name");
+        let gameBoard = new Game(this.domElement.querySelector(".game-board-container"), "Player name");
+        gameBoard.initialize();
 	}
 
 	destroy() {

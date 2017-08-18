@@ -22,4 +22,9 @@ class Card{
     addClickEventListener(callback){
         this.domElement.addEventListener("click",() => { callback();}, false);
     }
+
+    addHoverEventListener(callbackMouseOver, callbackMouseOut){
+        this.domElement.addEventListener("mouseover",() => { callbackMouseOver(); }, false);
+        this.domElement.addEventListener("mouseout",() => { callbackMouseOut(); }, false);
+    }
 }
