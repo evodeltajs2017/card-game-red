@@ -12,7 +12,6 @@ class CardRepository {
                     resolve(JSON.parse(this.responseText));
                 }
             };
-
             xhr.send();
         });
 

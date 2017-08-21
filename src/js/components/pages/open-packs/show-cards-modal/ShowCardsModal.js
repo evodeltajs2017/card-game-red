@@ -33,7 +33,7 @@ class ShowCardsModal{
 
         for(let i=0; i<cardsNumber ;i++){
             let card = new Card(modalContent, cardsData[i]);
-            card.initialize();
+            card.initialize("cards-modal");
 
             Array.from(this.domElement.getElementsByClassName("card")).forEach( x => x.className += " modal-card");
 

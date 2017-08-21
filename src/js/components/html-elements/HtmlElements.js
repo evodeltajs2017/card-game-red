@@ -66,4 +66,27 @@ class HtmlElements {
 		this.domElement.innerHTML = htmlTemplate;
 		return this.domElement;
 	}
+
+	createCardCollection() {
+		const div = document.createElement("div");
+		div.className = "card-collection-container";
+		this.container.appendChild(div);
+		this.domElement = div;
+
+		const htmlTemplate =
+			`<div class="card-collection-header">
+				<div class="card-collection-title">
+					<h1>Card Collection</h1>
+				</div>
+				<div class="card-collection-search">
+					<input type="text" class="search-input" placeholder="Search cards">
+					<input type="submit" class="search-button" value="Search">
+				</div>
+			</div>
+			<div class="card-collection-content">
+			</div>`;
+
+		this.domElement.innerHTML = htmlTemplate;
+		return this.domElement;
+	}
 }
