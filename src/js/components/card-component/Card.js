@@ -6,7 +6,7 @@ class Card{
 
     initialize() {
         const div = document.createElement("div");
-        div.className = " card";
+        div.className = "card";
         div.innerHTML = `<div class="card-cost card-num">${this.cardData.Cost}</div>
                             <div class="card-image"><i class="fa"></i></div>
                             <div class="card-name">${this.cardData.Name}</div>

@@ -30,9 +30,6 @@ html, body {
 }
 
 .add-card-type-content {
-	//background-image: url("https://i.ytimg.com/vi/DGPsaTgSzYQ/maxresdefault.jpg");
-	//background-size: 100% 100%;
-    //background-repeat: no-repeat;
 	float: left;
 	width: 100%;
 	height: calc(100vh - 130px);
@@ -45,7 +42,7 @@ html, body {
 	float: left;
 	margin: 30px 0 0 0;
 	width: 60%;
-	height: calc(100vh - 210px);;
+	height: calc(100vh - 210px);
 }
 
 .card-type-view {
