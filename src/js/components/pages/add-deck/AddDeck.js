@@ -1,7 +1,8 @@
 class AddDeck {
 
-	constructor(container) {
+	constructor(container, router) {
 		this.container = container;
+		this.router = router;
 		this.draggedElement = undefined;
 		this.totalCards = undefined;
 		this.countCardsInDeck = 0;
@@ -14,7 +15,7 @@ class AddDeck {
 				<div class="header">
 					<div class="title"><h1>Create deck</h1></div>
 					<div class="buttons">
-						<button class="saveButton" disabled="true">Save</button>
+						<button title="Minimum 30 cards required" class="saveButton" disabled="true">Save</button>
 					</div>
 				</div> 
 				<div class="content"></div>
@@ -52,12 +53,12 @@ class AddDeck {
 				</div>
 			`;
 		}
-		document.querySelector(`.add-deck-container .available-cards`).innerHTML = divCards;
+		this.getDivAvailableCards().innerHTML = divCards;
 		this.setListeners();
 	}
 
 	setListeners() {
-		const availableCards = document.querySelector(`.add-deck-container .available-cards`);
+		const availableCards = this.getDivAvailableCards();
 		const choosedCards = document.querySelector(`.add-deck-container .container-created-deck`);
 
 		for (let i = 0; i < this.totalCards; i++) {
@@ -66,15 +67,19 @@ class AddDeck {
 			    this.draggedElement = draggableDiv;
 			    let position = draggableDiv.getAttribute("data-position");
 			    if(position == 1) {
-			    	availableCards.style.backgroundColor = "#26004d";
+			    	// availableCards.style.backgroundColor = "#99661A";
+			    	availableCards.classList.add("animation");
 			    } else {
-			    	choosedCards.style.backgroundColor = "#26004d";
+			    	// choosedCards.style.backgroundColor = "#99661A";
+			    	choosedCards.classList.add("animation");
 			    }
 			};
 			draggableDiv.ondragend = (e) => {
 			    this.draggedElement = undefined;
 			    choosedCards.style.backgroundColor = "transparent";
 			    availableCards.style.backgroundColor = "transparent";
+			    choosedCards.classList.remove("animation");
+			    availableCards.classList.remove("animation");
 			};
 		}
 
@@ -86,18 +91,17 @@ class AddDeck {
 			e.preventDefault();
 			if (this.draggedElement.getAttribute("data-position") == 1) {
 				this.countCardsInDeck--;
+				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (minimum 30)`);
 				if (this.countCardsInDeck > 29) {
-					document.querySelector(".add-deck-container .deck-name").disabled = false;
+					this.getButtonSave().disabled = false;
 				} else {
-					document.querySelector(".add-deck-container .deck-name").disabled = true;
+					this.getButtonSave().disabled = true;
 				}
 			}
 			this.draggedElement.setAttribute("data-position", 0);
 			availableCards.style.backgroundColor = "transparent";
 			availableCards.appendChild(this.draggedElement);
 			this.draggedElement = undefined;
-
-			console.log(this.countCardsInDeck);
 		}
 
 		choosedCards.ondragover = (e) => {
@@ -108,23 +112,22 @@ class AddDeck {
 			e.preventDefault();
 			if (this.draggedElement.getAttribute("data-position") == 0) {
 				this.countCardsInDeck++;
+				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (minimum 30)`);
 				if (this.countCardsInDeck > 29) {
-					document.querySelector(".add-deck-container .deck-name").disabled = false;
+					this.getButtonSave().disabled = false;
 				} else {
-					document.querySelector(".add-deck-container .deck-name").disabled = true;
+					this.getButtonSave().disabled = true;
 				}
 			}
 			this.draggedElement.setAttribute("data-position", 1);
 			availableCards.style.backgroundColor = "transparent";
-			document.querySelector(`.add-deck-container .choosed-cards`).appendChild(this.draggedElement);
+			this.getDivChoosedCards().appendChild(this.draggedElement);
 			this.draggedElement = undefined;
-
-			console.log(this.countCardsInDeck);
 		}
 	}
 
 	setEventListenerForSave() {
-		document.querySelector(`.add-deck-container .saveButton`).addEventListener("click", (e) => {
+		this.getButtonSave().addEventListener("click", (e) => {
 			const deckRepository = new DeckRepository();
 			if (document.querySelector(`.add-deck-container .deck-name`).value != "") {
 				let cardIds = [];
@@ -139,13 +142,27 @@ class AddDeck {
 				);
 				promise.then((data) => {
 					if (data.status > 0) {
-						this.generateCards();
+						this.router.go("/view-decks");
 					}
 				},(reason) => {
 					console.log("Error", reason.statusText);
 				});
+			} else {
+				alert("Name cannot be empty.");
 			}
 		}, false);
+	}
+
+	getDivAvailableCards() {
+		return document.querySelector(`.add-deck-container .available-cards`);
+	}
+
+	getDivChoosedCards() {
+		return document.querySelector(`.add-deck-container .choosed-cards`);
+	}
+
+	getButtonSave() {
+		return document.querySelector(".add-deck-container .saveButton");
 	}
 
 	destroy() {
