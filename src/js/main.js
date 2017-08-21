@@ -7,6 +7,7 @@ router.addRoute("/card-types", CardTypes);
 router.addRoute("/open-packs", OpenPacks);
 router.addRoute("/card-collection", CardCollection);
 router.addRoute("/view-decks", ViewDecks);
+router.addRoute("/create-arena-deck", CreateArenaDeck);
 
 router.initialize();
 

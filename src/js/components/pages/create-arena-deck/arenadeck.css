@@ -1,8 +1,4 @@
-body {
-    overflow: auto;
-    height: calc(100vh - 143px);
-}
-.card-collection-header {
+.arena-header {
 	padding-top: 5px;
 	border-bottom: 3px solid #ccc;
 	box-shadow: 0px 10px 15px -9px rgba(170,170,170,1);
@@ -10,47 +6,79 @@ body {
 	display: flex;
 }
 
-.card-collection-title {
+.arena-title {
 	width: 70%;
 	margin-left: 5%;
 }
 
-.card-collection-title h1 {
+.arena-title h1 {
 	font-size: 40px;
 	margin-top: 22px;
 }
 
-.card-collection-search {
-	position: absolute;
-	right: 64px;
-	margin-top: 30px;
-}
-
-.search-input, .search-button {
-	display: inline-block;
-	background: #fff;
-	padding: 10px 15px 10px 15px;
-	font-family: Aclonica, serif;
-	box-shadow: inset 0 0 10px 1px #222;
-	border: 1px solid #333;
-	border-radius: 5px;
-}
-
-.search-button:hover {
-	box-shadow: inset 0 0 20px 1px #000;
-	cursor: pointer;
-}
-
-
-/*card collection*/
-.card-collection-content {
-	float: left;
-	width: 100%;
+.arena-container {
+    float: left;
+    width: 100%;
     height: 100%;
     padding: 0 0.6%;
 }
 
-.card-view {
+.arena-content {
+    width: 100%;
+    float: left;
+    border: 1px solid green;
+}
+
+/*Choice Cards*/
+
+.arena-selection {
+    width: 70%;
+    float: left;
+    border: 1px solid green;
+}
+
+.arena-cards {
+    max-width: 760px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
+    /*float: left;*/
+    border: 1px solid red;
+}
+
+/*Graph*/
+
+.arena-graph {
+    max-width: 760px;
+    /*float: left;*/
+    margin: 0 auto;
+    border: 1px solid orange;
+}
+
+.progress {
+    width: 50px;
+    height: 280px;
+    margin: 0.5% 2%;
+    float: left;
+    background-color: #4CAF50;
+}
+
+.bar {
+    width: 50px;
+    height: 40%;
+    background-color: #ddd;
+}
+
+/*Deck*/
+
+.arena-deck {
+    width: 30%;
+    float: left;
+    overflow: auto;
+    border: 1px solid blue;
+}
+
+.card-arena-view {
 	background: url("../open-packs/card.png") no-repeat;
 	border-radius: 25px;
 	background-size: contain;
@@ -61,7 +89,7 @@ body {
 	margin: 0.5% 1% 0.2% 1%;
 }
 
-.card-view .card-name {
+.card-arena-view .card-name {
     margin: 0 auto;
     width: 100%;
     bottom: 0;
@@ -72,7 +100,7 @@ body {
     position: absolute;
 }
 
-.card-view .card-image {
+.card-arena-view .card-image {
     font-size: 30px;
     margin: 0 auto;
     height: 100px;
@@ -85,31 +113,31 @@ body {
     position: absolute;
 }
 
-.card-view .card-image i {
+.card-arena-view .card-image i {
     position: relative;
     top: 50%;
     left: 3%;
 }
 
-.card-view .card-cost {
+.card-arena-view .card-cost {
     left: 10%;
     top: 22px;
     position: absolute;
 }
 
-.card-view .card-damage {
+.card-arena-view .card-damage {
     left: 13%;
     top: 320px;
     position: absolute;
 }
 
-.card-view .card-health {
+.card-arena-view .card-health {
     right: 11%;
     top: 320px;
     position: absolute;
 }
 
-.card-view .card-num {
+.card-arena-view .card-num {
     border-radius: 50%;
     color: #eee;
     text-align: center;

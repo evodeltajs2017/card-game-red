@@ -11,6 +11,10 @@ const AddCardType = require("./routes/add-card-type/AddCardRoute");
 const addCardType = new AddCardType(app);
 addCardType.initialize();
 
+const ArenaDeck = require("./routes/arena-deck/createArenaDeckRoute");
+const createArenaDeck = new ArenaDeck(app);
+createArenaDeck.initialize();
+
 const Dashboard = require("./routes/sample/SampleRoute");
 const dashboard = new Dashboard(app);
 dashboard.initialize();

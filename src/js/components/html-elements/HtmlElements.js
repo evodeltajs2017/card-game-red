@@ -89,4 +89,53 @@ class HtmlElements {
 		this.domElement.innerHTML = htmlTemplate;
 		return this.domElement;
 	}
+
+	createArenaTemplate() {
+		const div = document.createElement("div");
+		div.className = "arena-container";
+		this.container.appendChild(div);
+		this.domElement = div;
+
+		const htmlTemplate =
+			`<div class="arena-header">
+				<div class="arena-title">
+					<h1>Arena</h1>
+				</div>
+			</div>
+			<div class="arena-content">
+				<div class="arena-selection">
+					<div class="arena-cards"></div>
+					<div class="arena-graph">
+						<div class="progress">
+							<div class="bar"></div>
+						</div>
+						<div class="progress">
+							<div class="bar"></div>
+						</div>
+						<div class="progress">
+							<div class="bar"></div>
+						</div>
+						<div class="progress">
+							<div class="bar"></div>
+						</div>
+						<div class="progress">
+							<div class="bar"></div>
+						</div>
+						<div class="progress">
+							<div class="bar"></div>
+						</div>
+						<div class="progress">
+							<div class="bar"></div>
+						</div>
+						<div class="progress">
+							<div class="bar"></div>
+						</div>
+					</div>
+				</div>
+				<div class="arena-deck"></div>
+			</div>`;
+
+		this.domElement.innerHTML = htmlTemplate;
+		return this.domElement;
+	}
 }
