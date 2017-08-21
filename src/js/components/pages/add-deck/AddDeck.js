@@ -23,6 +23,7 @@ class AddDeck {
 		this.container.appendChild(divMain);
 		this.generateCards();
 		this.setEventListenerForSave();
+		this.setEventListenerForName();
 	}
 
 	generateCards() {
@@ -67,10 +68,8 @@ class AddDeck {
 			    this.draggedElement = draggableDiv;
 			    let position = draggableDiv.getAttribute("data-position");
 			    if(position == 1) {
-			    	// availableCards.style.backgroundColor = "#99661A";
 			    	availableCards.classList.add("animation");
 			    } else {
-			    	// choosedCards.style.backgroundColor = "#99661A";
 			    	choosedCards.classList.add("animation");
 			    }
 			};
@@ -92,11 +91,7 @@ class AddDeck {
 			if (this.draggedElement.getAttribute("data-position") == 1) {
 				this.countCardsInDeck--;
 				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (minimum 30)`);
-				if (this.countCardsInDeck > 29) {
-					this.getButtonSave().disabled = false;
-				} else {
-					this.getButtonSave().disabled = true;
-				}
+				this.checkValidation();
 			}
 			this.draggedElement.setAttribute("data-position", 0);
 			availableCards.style.backgroundColor = "transparent";
@@ -113,11 +108,7 @@ class AddDeck {
 			if (this.draggedElement.getAttribute("data-position") == 0) {
 				this.countCardsInDeck++;
 				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (minimum 30)`);
-				if (this.countCardsInDeck > 29) {
-					this.getButtonSave().disabled = false;
-				} else {
-					this.getButtonSave().disabled = true;
-				}
+				this.checkValidation();
 			}
 			this.draggedElement.setAttribute("data-position", 1);
 			availableCards.style.backgroundColor = "transparent";
@@ -129,7 +120,7 @@ class AddDeck {
 	setEventListenerForSave() {
 		this.getButtonSave().addEventListener("click", (e) => {
 			const deckRepository = new DeckRepository();
-			if (document.querySelector(`.add-deck-container .deck-name`).value != "") {
+			if (this.getInputName().value != "") {
 				let cardIds = [];
 				for (let i = 0; i < this.totalCards; i++) {
 					if (document.querySelector(`.add-deck-container .draggable${i}`).getAttribute("data-position") == 1) {
@@ -137,7 +128,7 @@ class AddDeck {
 					}
 				}
 				const promise = deckRepository.addDeck(
-					document.querySelector(`.add-deck-container .deck-name`).value,
+					this.getInputName().value,
 					cardIds
 				);
 				promise.then((data) => {
@@ -153,6 +144,20 @@ class AddDeck {
 		}, false);
 	}
 
+	setEventListenerForName() {
+		this.getInputName().addEventListener("input", (e) => {
+			this.checkValidation();
+		}); 
+	}
+
+	checkValidation() {
+		if (this.countCardsInDeck > 29 && this.getInputName().value != "null" && this.getInputName().value != "" && this.getInputName().value != undefined) {
+			this.getButtonSave().disabled = false;
+		} else {
+			this.getButtonSave().disabled = true;
+		}
+	}
+
 	getDivAvailableCards() {
 		return document.querySelector(`.add-deck-container .available-cards`);
 	}
@@ -163,6 +168,10 @@ class AddDeck {
 
 	getButtonSave() {
 		return document.querySelector(".add-deck-container .saveButton");
+	}
+
+	getInputName() {
+		return document.querySelector(`.add-deck-container .deck-name`);
 	}
 
 	destroy() {
