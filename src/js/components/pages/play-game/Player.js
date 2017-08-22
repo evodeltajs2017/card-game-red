@@ -1,5 +1,5 @@
 class Player{
-    constructor(name, initialMana){
+    constructor(name, initialMana) {
         this.isAI = false;
         this.name = name;
         this.deck = [];
@@ -10,6 +10,7 @@ class Player{
         this.cardsOnBoard = [];
         this.inactiveCards = [];
         this.emptyDeckDamage = 0;
+        this.attackedThisTurn = [];
     }
 
     setDeck(deck){
@@ -29,10 +30,15 @@ class Player{
 
     resetInactiveCards(){
         this.inactiveCards = [];
+        this.attackedThisTurn = [];
     }
 
     addInactiveCard(card){
         this.inactiveCards.push(card);
+    }
+
+    addAlreadyAttackedThisTurnCard(card){
+        this.attackedThisTurn.push(card);
     }
 
     damageCard(card, damage){

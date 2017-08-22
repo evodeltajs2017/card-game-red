@@ -265,19 +265,17 @@
 .enemy-board{
     position: absolute;
     height: 140px;
-    width: 68%;
+    width: 952px;
     top: 270px;
     left: 12%;
-    text-align: center;
 }
 
 .player-board{
     position: absolute;
     height: 140px;
-    width: 68%;
+    width: 952px;
     top: 437px;
     left: 12%;
-    text-align: center;
 }
 
 .card-on-board{
@@ -287,11 +285,12 @@
 }
 
 .enemy-hero{
-    height: 170px;
-    width: 145px;
+    height: 145px;
+    width: 135px;
     position: absolute;
     top: 100px;
-    left: 570px;
+    left: 572px;
+    border-radius: 60px;
 }
 
 .card-on-board .card-health{
@@ -379,17 +378,19 @@
     top: 30px;
 }
 
-/*animations*/
+.enemy-board .hand-card{
+    width: 95px;
+}
 
-@keyframes drawCard {
-    from{
-        transform: scale(0,0) rotate3d(0,1,0, 90deg);
-        left: 1170px;
-        top: 465px;
-    }
-    to{
-        top: 820px;
-        left: 580px;
-        transform: scale(1,1) rotate3d(0,1,0, -10deg);
-    }
+.player-board .hand-card{
+    width: 95px;
+}
+
+.player-hero{
+    height: 145px;
+    width: 135px;
+    position: absolute;
+    top: 610px;
+    left: 572px;
+    border-radius: 60px;
 }
