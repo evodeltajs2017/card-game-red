@@ -6,17 +6,23 @@ class AddDeck {
 		this.draggedElement = undefined;
 		this.totalCards = undefined;
 		this.countCardsInDeck = 0;
+		this.isEdit = router.getOptions() != undefined;
 	}
 
 	initialize() {
 		const divMain = document.createElement("div");
+		let header = "Create deck";
+		let buttons = `<button title="Minimum 30 cards required" class="saveButton" disabled="true">Save</button>`;
+		if (this.isEdit) {
+			header = "Edit deck";
+			buttons = `<button class="cancelButton">Cancel</button>
+				<button title="No changes made" class="saveButton" disabled="true">Save</button>`;
+		}
 		divMain.innerHTML = 
 			`<div class="add-deck-container" style="height:${0.77 * screen.height}px">
 				<div class="header">
-					<div class="title"><h1>Create deck</h1></div>
-					<div class="buttons">
-						<button title="Minimum 30 cards required" class="saveButton" disabled="true">Save</button>
-					</div>
+					<div class="title"><h1>${header}</h1></div>
+					<div class="buttons">${buttons}</div>
 				</div> 
 				<div class="content"></div>
 			</div>`;
@@ -24,6 +30,9 @@ class AddDeck {
 		this.generateCards();
 		this.setEventListenerForSave();
 		this.setEventListenerForName();
+		if (this.isEdit) {
+			this.setEventListenerForCancel();
+		}
 	}
 
 	generateCards() {
@@ -35,7 +44,10 @@ class AddDeck {
 			</div>
 		`;
 		const deckRepository = new DeckRepository();
-		const promise = deckRepository.getCards();
+		let promise = deckRepository.getCards();
+		if (this.isEdit) {
+			promise = deckRepository.getCardsForDeck(this.router.getOptions().deckId);
+		}
 		promise.then((data) => {
 			this.buildCards(data);
 		},(reason) => {
@@ -44,18 +56,36 @@ class AddDeck {
 	}
 
 	buildCards(data) {
-		this.totalCards = data.items.length;
-		let divCards = "";
-		for (let i = 0; i < this.totalCards; i++) {
-			divCards += `
-				<div class="drag-box draggable${i}" draggable="true" data-position="0" data-id="${data.items[i].Id}">
-					<div class="mana-cost">${data.items[i].Cost}</div>
-					<div class="card-name">${data.items[i].Name}</div>
-				</div>
-			`;
+		if (this.isEdit) {
+			this.totalCards = data.cardsNotUsed.length + data.cardsUsed.length;
+			this.countCardsInDeck = data.cardsUsed.length;
+			this.getInputName().value = data.deckName;
+			let divCardsNotUsed = "";
+			for (let i = 0; i < data.cardsNotUsed.length; i++) {
+				divCardsNotUsed += this.createDraggable(i, 0, data.cardsNotUsed[i]);
+			}
+			this.getDivAvailableCards().innerHTML = divCardsNotUsed;
+			let divCardsUsed = "";
+			for (let i = 0; i < data.cardsUsed.length; i++) {
+				divCardsUsed += this.createDraggable(i + data.cardsNotUsed.length, 1, data.cardsUsed[i]);
+			}
+			this.getDivChoosedCards().innerHTML = divCardsUsed;
+		} else {
+			this.totalCards = data.items.length;
+			let divCards = "";
+			for (let i = 0; i < this.totalCards; i++) {
+				divCards += this.createDraggable(i, 0, data.items[i]);
+			}
+			this.getDivAvailableCards().innerHTML = divCards;
 		}
-		this.getDivAvailableCards().innerHTML = divCards;
 		this.setListeners();
+	}
+
+	createDraggable(i, position, card) {
+		return `<div class="drag-box draggable${i}" draggable="true" data-position="${position}" data-id="${card.Id}">
+					<div class="mana-cost">${card.Cost}</div>
+					<div class="card-name">${card.Name}</div>
+				</div>`;
 	}
 
 	setListeners() {
@@ -127,10 +157,17 @@ class AddDeck {
 						cardIds.push(document.querySelector(`.add-deck-container .draggable${i}`).getAttribute("data-id"));
 					}
 				}
-				const promise = deckRepository.addDeck(
+				let promise = deckRepository.addDeck(
 					this.getInputName().value,
 					cardIds
 				);
+				if (this.isEdit) {
+					promise = deckRepository.editDeck(
+						this.router.getOptions().deckId,
+						this.getInputName().value,
+						cardIds
+					);
+				}
 				promise.then((data) => {
 					if (data.status > 0) {
 						this.router.go("/view-decks");
@@ -148,6 +185,12 @@ class AddDeck {
 		this.getInputName().addEventListener("input", (e) => {
 			this.checkValidation();
 		}); 
+	}
+
+	setEventListenerForCancel() {
+		document.querySelector(`.add-deck-container .cancelButton`).addEventListener("click", (e) => {
+			this.router.go("/view-decks");
+		});
 	}
 
 	checkValidation() {
