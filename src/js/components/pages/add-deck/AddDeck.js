@@ -151,8 +151,13 @@ class AddDeck {
 	}
 
 	checkValidation() {
-		if (this.countCardsInDeck > 29 && this.getInputName().value != "null" && this.getInputName().value != "" && this.getInputName().value != undefined) {
+		let checkName = this.getInputName().value != null && this.getInputName().value != "" && this.getInputName().value != undefined;
+		if (this.countCardsInDeck == 30 && checkName) {
 			this.getButtonSave().disabled = false;
+			this.getButtonSave().setAttribute("title", ``);
+		} else if (this.countCardsInDeck == 30 && !checkName) {
+			this.getButtonSave().setAttribute("title", `Name field is empty`);
+			this.getButtonSave().disabled = true;
 		} else {
 			this.getButtonSave().disabled = true;
 		}

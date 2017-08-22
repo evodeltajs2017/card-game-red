@@ -37,7 +37,6 @@ class EditDeck {
 			</div>
 		`;
 		const deckRepository = new DeckRepository();
-		//redo
 		const promise = deckRepository.getCardsForDeck(this.router.getOptions().deckId);
 		promise.then((data) => {
 			this.buildCards(data);
@@ -105,7 +104,7 @@ class EditDeck {
 			e.preventDefault();
 			if (this.draggedElement.getAttribute("data-position") == 1) {
 				this.countCardsInDeck--;
-				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (minimum 30)`);
+				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (required 30)`);
 				this.checkValidation();
 			}
 			this.draggedElement.setAttribute("data-position", 0);
@@ -122,7 +121,7 @@ class EditDeck {
 			e.preventDefault();
 			if (this.draggedElement.getAttribute("data-position") == 0) {
 				this.countCardsInDeck++;
-				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (minimum 30)`);
+				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (required 30)`);
 				this.checkValidation();
 			}
 			this.draggedElement.setAttribute("data-position", 1);
@@ -173,8 +172,13 @@ class EditDeck {
 	}
 
 	checkValidation() {
-		if (this.countCardsInDeck > 29 && this.getInputName().value != "null" && this.getInputName().value != "" && this.getInputName().value != undefined) {
+		let checkName = this.getInputName().value != null && this.getInputName().value != "" && this.getInputName().value != undefined;
+		if (this.countCardsInDeck == 30 && checkName) {
 			this.getButtonSave().disabled = false;
+			this.getButtonSave().setAttribute("title", ``);
+		} else if (this.countCardsInDeck == 30 && !checkName) {
+			this.getButtonSave().setAttribute("title", `Name field is empty`);
+			this.getButtonSave().disabled = true;
 		} else {
 			this.getButtonSave().disabled = true;
 		}

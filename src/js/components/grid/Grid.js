@@ -41,7 +41,7 @@ class Grid {
 			if (data.items[0] !== undefined) {
 				this.generateContent(data);
 			} else {
-				alert("Grid empty.");
+				document.querySelector(`.grid-container .content`).innerHTML = "No results found, empty database or search keyword not found.";
 			}
 		}).catch((reason) => {
 			console.log("Error", reason.statusText);
@@ -118,7 +118,7 @@ class Grid {
 			if (i != this.currentPage) {
 				document.querySelector(`.grid-container .pageButton${i}`).addEventListener("click", (e) => { 
 					this.currentPage = i;
-					this.requestPromise();
+					this.requestPromise(this.getSearchField().value);
 				 }, false);
 			}
 		}
@@ -135,19 +135,9 @@ class Grid {
 	}
 
 	setEventListenersForSearch() {
-		document.querySelector(`.grid-container .searchButton`).addEventListener("click", (e) => { 
-			this.onSearch();
-		}, false);
-		this.getSearchField().addEventListener("keyup", (e) => {
-		    if (e.keyCode == 13) {
-		        this.onSearch();
-		    }
+		this.getSearchField().addEventListener("input", (e) => {
+		    this.generateGrid(this.getSearchField().value);
 		});
-	}
-
-	onSearch() {
-		this.generateGrid(this.getSearchField().value);
-		this.getSearchField().value = "";
 	}
 
 	getSearchField() {
