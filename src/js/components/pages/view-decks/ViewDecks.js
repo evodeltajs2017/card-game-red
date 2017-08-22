@@ -34,7 +34,7 @@ class ViewDecks {
 
 	editDeck(i) {
 		let deckId = document.querySelector(`.grid-container .edit${i}`).getAttribute("data-internalid");
-		this.router.go("/add-deck", {deckId});
+		this.router.go("/add-deck", false, {deckId});
 	}
 
 	deleteDeck(i) {
