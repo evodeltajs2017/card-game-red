@@ -13,7 +13,7 @@ class DeckRepository {
 		});
 	}
 
-	editDeck(id, name) {
+	editDeck(id, name, cardIds) {
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
 			xhr.open("POST", `http://localhost:3000/deck/`, true);
@@ -22,7 +22,8 @@ class DeckRepository {
 			xhr.onerror = () => { reject(xhr.statusText); };
 			xhr.send(JSON.stringify({
 				id,
-				name
+				name,
+				cardIds
 			}));
 		});
 	}
@@ -55,6 +56,16 @@ class DeckRepository {
 				name,
 				id
 			}));
+		});
+	}
+
+	getCardsForDeck(id) {
+		return new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest();
+			xhr.open("GET", `http://localhost:3000/view-deck/${id}`, true);
+			xhr.onload = () => { resolve(JSON.parse(xhr.responseText)); };
+			xhr.onerror = () => { reject(xhr.statusText); };
+			xhr.send();
 		});
 	}
 }

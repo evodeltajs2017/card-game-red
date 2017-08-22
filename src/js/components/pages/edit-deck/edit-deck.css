@@ -1,0 +1,162 @@
+.edit-deck-container button {
+	margin: 4px;
+}
+
+.edit-deck-container .header {
+	padding-top: 5px;
+	border-bottom: 3px solid #ccc;
+	box-shadow: 0px 10px 15px -9px rgba(170,170,170,1);
+	width: 100%;
+	display: flex;
+}
+
+.edit-deck-container .title {
+	width: 70%;
+	margin-left: 5%;
+}
+
+.edit-deck-container .title h1 {
+	font-size: 40px;
+	margin-top: 22px;
+}
+
+.edit-deck-container .buttons {
+	position: absolute;
+	right: 64px;
+	margin-top: 30px;
+}
+
+.edit-deck-container .content {
+	height: 100%;
+	width: 100%;
+}
+
+.edit-deck-container .available-cards {
+	width: 70%;
+	height: 100%;
+	border-right: 3px solid #ccc;
+	float: left;
+	overflow: auto;
+	padding: 16px;
+	box-shadow: 15px 0px 10px -9px rgba(170,170,170,1);
+}
+
+.edit-deck-container .choosed-cards {
+	width: 100%;
+	height: 95%;
+	margin-top: 16px;
+	overflow: auto;
+}
+
+.edit-deck-container .container-created-deck {
+	width: 30%;
+	height: 100%;
+	border-left: 3px solid #ccc;
+	float: right;
+	padding: 16px;
+	box-shadow: -15px 0px 10px -9px rgba(170,170,170,1);
+}
+
+.edit-deck-container .drag-box {
+	padding: 16px;
+	border: 2px solid #ccc;
+	margin: 16px;
+	user-select: none;
+	background-color: #333  ;
+}
+
+.edit-deck-container .deck-name {
+	width: 100%;
+	display: inline-block;
+	background: #fff;
+	padding: 10px 15px 10px 15px;
+	font-family: Aclonica, serif;
+	box-shadow: inset 0 0 10px 1px #222;
+	border: 1px solid #333;
+	border-radius: 5px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.edit-deck-container .mana-cost {
+	background-color: #0061FF;
+	padding: 8px;
+	width: 32px;
+	height: 32px;
+	color: white;
+	display: inline;
+	text-align: center;
+	border-radius: 64px;
+	margin-right: 64px;
+}
+
+.edit-deck-container .card-name {
+	display: inline;
+}
+
+.edit-deck-container {
+	height: 500px;
+}
+
+.edit-deck-container .animation {
+	-webkit-animation: flickerAnimation 1.5s infinite;
+	-moz-animation: flickerAnimation 1.5s infinite;
+	-o-animation: flickerAnimation 1.5s infinite;
+	animation: flickerAnimation 1.5s infinite;
+}
+
+@keyframes flickerAnimation {
+	0% { 
+		opacity:1;
+		background-color: transparent;
+	}
+	50% { 
+		opacity:0; 
+		background-color: darkorange;
+	}
+	100% {
+		opacity:1; 
+		background-color: transparent;
+	}
+}
+@-o-keyframes flickerAnimation{
+	0% { 
+		opacity:1;
+		background-color: transparent;
+	}
+	50% { 
+		opacity:0; 
+		background-color: darkorange;
+	}
+	100% {
+		opacity:1; 
+		background-color: transparent;
+	}
+}
+@-moz-keyframes flickerAnimation{
+	0% { 
+		opacity:1;
+		background-color: transparent;
+	}
+	50% { 
+		opacity:0; 
+		background-color: darkorange;
+	}
+	100% {
+		opacity:1; 
+		background-color: transparent;
+	}
+}
+@-webkit-keyframes flickerAnimation{
+	0% { 
+		opacity:1;
+		background-color: transparent;
+	}
+	50% { 
+		opacity:0; 
+		background-color: darkorange;
+	}
+	100% {
+		opacity:1; 
+		background-color: transparent;
+	}
+}

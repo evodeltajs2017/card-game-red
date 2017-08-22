@@ -43,6 +43,10 @@ const EditDeckRoute = require("./routes/view-deck/EditDeckRoute");
 const editDeckRoute = new EditDeckRoute(app);
 editDeckRoute.initialize();
 
+const GetAllCardsForDeckRoute = require("./routes/view-deck/GetAllCardsForDeckRoute");
+const getAllCardsForDeckRoute = new GetAllCardsForDeckRoute(app);
+getAllCardsForDeckRoute.initialize();
+
 const GetCardsRoute = require("./routes/add-deck/GetCardsRoute");
 const getCardsRoute = new GetCardsRoute(app);
 getCardsRoute.initialize();

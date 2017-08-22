@@ -3,6 +3,7 @@ class Router {
 		this.routes = [];
 		this.container = container;
 		this.currentComponent = undefined;
+		this.options = undefined;
 	}
 
 	addRoute(url, component) {
@@ -20,6 +21,7 @@ class Router {
 	go(url, options) {
 		console.log("go", url);
 		const route = this.routes.find(x => x.url === url);
+		this.options = options;
 
 		if (route !== undefined) {
 			if (this.currentComponent !== undefined) {
@@ -31,6 +33,10 @@ class Router {
 			this.currentComponent = new route.component(this.container, this);
 			this.currentComponent.initialize();
 		}
+	}
+
+	getOptions() {
+		return this.options;
 	}
 }
 
