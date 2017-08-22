@@ -53,7 +53,11 @@ class CardTypes {
 			promise.then((data) => {
 				console.log(data);
 				if (data.isCardType == 1) {
-					alert(`Deleted the card type with the id ${cardTypeId} and deleted ${data.countCards} cards.`);
+					if (data.countDecks == undefined || data.countDecks == null || data.countDecks == 0) {
+						alert(`Deleted the card type with the id ${cardTypeId} and ${data.countCards} card(s).`);
+					} else {
+						alert(`Deleted the card type with the id ${cardTypeId}, ${data.countCards} card(s) and ${data.countDecks} deck(s).`);
+					}
 				} else {
 					alert(`The card type with the id ${cardTypeId} was already deleted.`);
 				}

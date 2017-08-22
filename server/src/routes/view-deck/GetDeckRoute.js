@@ -20,7 +20,7 @@ class GetDeckRoute {
 				new sql.Request().query(`select count(*) as number from [dbo].[Deck]${paramCheck.query}`, (err, result) => {
 					count = result.recordset[0].number;
 				});
-				new sql.Request().query(`select * from [dbo].[Deck]${paramCheck.query} order by [Id] OFFSET ${index} ROWS FETCH NEXT 10 ROWS ONLY`, (err, result) => {
+				new sql.Request().query(`select * from [dbo].[Deck]${paramCheck.query} order by [Id] desc OFFSET ${index} ROWS FETCH NEXT 10 ROWS ONLY`, (err, result) => {
 					res.json({
 						count,
 					 	items: result.recordset,

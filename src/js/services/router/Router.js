@@ -3,6 +3,7 @@ class Router {
 		this.routes = [];
 		this.container = container;
 		this.currentComponent = undefined;
+		this.options = undefined;
 	}
 
 	addRoute(url, component) {
@@ -26,7 +27,8 @@ class Router {
 		}		
 	}
 
-	go(url, suppressPushStates) {
+	go(url, suppressPushStates, options) {
+		this.options = options;
 
 		const route = this.routes.find(x => x.url === url);
 		if (route !== undefined) {
@@ -43,5 +45,9 @@ class Router {
 		if (!suppressPushStates) {
 			history.pushState(url, "", url);
 		}
+	}
+
+	getOptions() {
+		return this.options;
 	}
 }

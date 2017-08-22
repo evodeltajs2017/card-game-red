@@ -38,7 +38,11 @@ class Grid {
 		const gridRepository = new GridRepository();
 		const promise = gridRepository.getGridForUrl(this.url, this.currentPage, searchField);
 		promise.then((data) => {
-			this.generateContent(data);
+			if (data.items[0] !== undefined) {
+				this.generateContent(data);
+			} else {
+				document.querySelector(`.grid-container .content`).innerHTML = "No results found, empty database or search keyword not found.";
+			}
 		}).catch((reason) => {
 			console.log("Error", reason.statusText);
 		});
@@ -46,10 +50,14 @@ class Grid {
 
 	generateContent(result) {
 		this.initializeValues(result.count);
+		let showingItems = `${(this.currentPage - 1) * 10 + 1} - ${(this.currentPage - 1) * 10 + this.itemsPerPage}`;
+		if (this.itemsPerPage == 1) {
+			showingItems = `${(this.currentPage - 1) * 10 + 1}`;
+		}
 		let contentDiv = `
 			<div class="grid">
 				${this.getGeneratedTable(result)}
-				<div class="itemsPerPage">Showing ${this.itemsPerPage} out of ${this.totalItems}</div>
+				<div class="itemsPerPage">Showing ${showingItems} out of ${this.totalItems}</div>
 				<div class="pageButtons">${this.getGeneratedPageButtons()}<div>
 			</div>`;
 		document.querySelector(`.grid-container .content`).innerHTML = contentDiv; 
@@ -110,7 +118,7 @@ class Grid {
 			if (i != this.currentPage) {
 				document.querySelector(`.grid-container .pageButton${i}`).addEventListener("click", (e) => { 
 					this.currentPage = i;
-					this.requestPromise();
+					this.requestPromise(this.getSearchField().value);
 				 }, false);
 			}
 		}
@@ -127,19 +135,9 @@ class Grid {
 	}
 
 	setEventListenersForSearch() {
-		document.querySelector(`.grid-container .searchButton`).addEventListener("click", (e) => { 
-			this.onSearch();
-		}, false);
-		this.getSearchField().addEventListener("keyup", (e) => {
-		    if (e.keyCode == 13) {
-		        this.onSearch();
-		    }
+		this.getSearchField().addEventListener("input", (e) => {
+		    this.generateGrid(this.getSearchField().value);
 		});
-	}
-
-	onSearch() {
-		this.generateGrid(this.getSearchField().value);
-		this.getSearchField().value = "";
 	}
 
 	getSearchField() {
