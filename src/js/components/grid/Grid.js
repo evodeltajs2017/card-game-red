@@ -19,7 +19,6 @@ class Grid {
 					<div class="title"><h1>${this.pageName}</h1></div>
 					<div class="search">
 						<input type="text" class="searchField" placeholder="Search"></input>
-						<input type="submit" class="searchButton"></input>
 					</div>
 				</div> 
 				<div class="content"></div>
