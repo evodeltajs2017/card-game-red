@@ -80,7 +80,6 @@ class HtmlElements {
 				</div>
 				<div class="card-collection-search">
 					<input type="text" class="search-input" placeholder="Search cards">
-					<input type="submit" class="search-button" value="Search">
 				</div>
 			</div>
 			<div class="card-collection-content">
@@ -106,29 +105,37 @@ class HtmlElements {
 				<div class="arena-selection">
 					<div class="arena-cards"></div>
 					<div class="arena-graph">
-						<div class="progress">
-							<div class="bar"></div>
+						<div class="bar">
+							<div class="progress-0"></div>
+							<div class="cost-label">0</div>
 						</div>
-						<div class="progress">
-							<div class="bar"></div>
+						<div class="bar">
+							<div class="progress-1"></div>
+							<div class="cost-label">1</div>
 						</div>
-						<div class="progress">
-							<div class="bar"></div>
+						<div class="bar">
+							<div class="progress-2"></div>
+							<div class="cost-label">2</div>
 						</div>
-						<div class="progress">
-							<div class="bar"></div>
+						<div class="bar">
+							<div class="progress-3"></div>
+							<div class="cost-label">3</div>
 						</div>
-						<div class="progress">
-							<div class="bar"></div>
+						<div class="bar">
+							<div class="progress-4"></div>
+							<div class="cost-label">4</div>
 						</div>
-						<div class="progress">
-							<div class="bar"></div>
+						<div class="bar">
+							<div class="progress-5"></div>
+							<div class="cost-label">5</div>
 						</div>
-						<div class="progress">
-							<div class="bar"></div>
+						<div class="bar">
+							<div class="progress-6"></div>
+							<div class="cost-label">6</div>
 						</div>
-						<div class="progress">
-							<div class="bar"></div>
+						<div class="bar">
+							<div class="progress-7"></div>
+							<div class="cost-label">7+</div>
 						</div>
 					</div>
 				</div>

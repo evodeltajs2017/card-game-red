@@ -1,12 +1,14 @@
 class CardCollection {
 	constructor(container) {
 		this.container = container;
+		this.searchValue = undefined;
+		this.pageIndex = undefined;
 	}
 
 	initialize() {
 		const domElement = new HtmlElements();
 		this.domElement = domElement.createCardCollection();
-		this.generateFirstCards();
+		this.onSearch();
 		this.generateCollectionOnScroll();
 		this.eventsForSearch();
 	}
@@ -24,30 +26,22 @@ class CardCollection {
 		}
 	}
 
-	generateFirstCards() {
-		this.getNextCards( (cards) => { this.displayCollection(cards, 0) }, 0);
-		this.getNextCards( (cards) => { this.displayCollection(cards, 1) }, 1);
-	}
-
 	generateCollectionOnScroll() {
-		let pageIndex = 2;
 		let lastScrollTop = 0;
 
 		this.scrollHandler = () => {
 			let bodyHeight = document.documentElement.scrollHeight - window.innerHeight;
 			let scrollPercentage = (window.pageYOffset / (bodyHeight));
 			let pos = window.pageYOffset || document.documentElement.scrollTop;
-			let processing = false;
 
-			if (processing) { return false; }
-
-			if (pos > lastScrollTop && scrollPercentage > 0.95) {
-				let searchName = this.getSearchInput();
-				processing = true;
-
-				if (pageIndex <= this.totalPages) {
-					this.getNextCards( (cards) => { this.displayCollection(cards, pageIndex); processing = false; }, pageIndex, searchName);
-					pageIndex++;
+			if (pos > lastScrollTop && scrollPercentage >= 0.95) {
+				console.log(this.pageIndex + "--pageIndex");
+				console.log(this.totalPages);
+				if (this.pageIndex <= this.totalPages) {
+					setTimeout(this.getNextCards.bind(this, (cards, page) => { this.displayCollection(cards, page) }, this.pageIndex), this.pageIndex * 100);
+					this.pageIndex++;
+				} else {
+					return;
 				}					    	
 			}
 			lastScrollTop = pos;
@@ -55,20 +49,15 @@ class CardCollection {
 		window.addEventListener("scroll", this.scrollHandler, false);
 	}
 
-	getNextCards(callback, pageIndex, searchName) {
+	getNextCards(callback, pageIndex) {
 		const card = new CardCollectionRepository();
-		card.getCards(pageIndex, searchName).then( (response) => { this.totalPages = response.Pages; callback(response.Cards, response.Pages); });
+		card.getCards(pageIndex, this.searchValue).then( (response) => { this.totalPages = response.Pages; callback(response.Cards, response.Pages); });
 	}
 
 	eventsForSearch() {
-		this.domElement.querySelector(".search-button").addEventListener("click", () => { 
+		this.domElement.querySelector(".search-input").addEventListener("input", () => {
 			this.onSearch();
-		}, false);
-		this.domElement.querySelector(".search-input").addEventListener("keyup", (e) => {
-		    if (e.keyCode == 13) {
-		        this.onSearch();
-		    }
-		}, false);
+		})
 	}
 
 	getSearchInput() {
@@ -76,10 +65,10 @@ class CardCollection {
 	}
 
 	onSearch() {
-		let searchValue = this.getSearchInput();
-		this.getNextCards((cards) => { this.displayCollection(cards, 0) }, 0, searchValue);
-		this.getNextCards((cards) => { this.displayCollection(cards, 1) }, 1, searchValue);
-		this.generateCollectionOnScroll();
+		this.searchValue = this.getSearchInput();
+		this.getNextCards((cards) => { this.displayCollection(cards, 0) }, 0);
+		setTimeout(this.getNextCards.bind(this, (cards) => { this.displayCollection(cards, 1) }, 1), 100);
+		this.pageIndex = 2;
 	}
 
 	destroy() {
