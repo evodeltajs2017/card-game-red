@@ -94,6 +94,10 @@ class Game{
             new CardRepository().generateDeck(),
 
         ]).then( data => {
+                if(data[0].length === 0 || data[1].length === 0){
+                    this.destroy();
+                    return;
+                }
                 this.player.setDeck(data[0]);
                 this.AI.setDeck(data[1]);
                 this.initializeHand(this.player);
@@ -720,7 +724,6 @@ class Game{
         }, false);
     }
 
-
     zoomCard(card){
         let zoomDiv = this.domElement.querySelector(".zoomed-card");
         zoomDiv.style.display = "inline-block";
@@ -740,5 +743,13 @@ class Game{
 
     isBoardFull(){
         return this.currentPlayer.cardsOnBoard.length === 7;
+    }
+
+    destroy(){
+        this.domElement.innerHTML = `<div style="font-size: 25px; margin-top: 100px; color: white">
+                                        The decks are empty because you do not own any cards! <br> Cannot start the game. 
+                                        <br><br><br> What are you waiting for? 
+                                        <div style="color: darkorange; font-size: 40px">Go open some card packs!</div>
+                                     </div>`;
     }
 }

@@ -172,10 +172,10 @@
 
 .enemy-hand{
     position: absolute;
-    height: 400px;
+    height: 395px;
     width: 1120px;
     left: 100px;
-    top: -25px;
+    top: -18px;
     overflow: hidden;
     padding: 0 30px 30px 30px;
     z-index: -1;
