@@ -4,6 +4,7 @@ class Game{
         this.attackingCard = null;
         this.playerName = playerName;
         this.AICardsOnBoard = [];
+        this.isAnimationInProgress = false;
     }
 
     initialize() {
@@ -24,8 +25,8 @@ class Game{
                                         <div class="player-hero"></div>
                                         <button class="turn-button player">End Turn</button>
                                         <div class="player-name">${this.player.name}</div>
-                                        <div class="enemy-health">30</div>
-                                        <div class="player-health">30</div>
+                                        <div class="enemy-health">${this.AI.health}</div>
+                                        <div class="player-health">${this.player.health}</div>
                                         <div class="enemy-mana">${this.AI.turnMana}\\${this.AI.maximalMana}</div>
                                         <div class="player-mana">${this.player.turnMana}\\${this.player.maximalMana}</div>
                                         <div class="mana-points"></div>
@@ -54,9 +55,12 @@ class Game{
     }
 
     initializeGameEventListeners(){
-        this.domElement.querySelector(".turn-button").addEventListener("click", () => {this.endTurn();}, false);
+        this.domElement.querySelector(".turn-button").addEventListener("click", () => {
+            if(this.currentPlayer === this.player && !this.isAnimationInProgress){
+                this.endTurn();
+            }}, false);
         this.domElement.querySelector(".enemy-hero").addEventListener("click", () => {
-            if(this.attackingCard !== null) {
+            if(this.attackingCard !== null && !this.isAnimationInProgress) {
                 this.attackAIHero(this.attackingCard);
             }}, false);
 
@@ -164,7 +168,10 @@ class Game{
     }
 
     addEventListenersOnPlayerCardInHand(card){
-        card.addClickEventListener(() => {this.playCard(card);});
+        card.addClickEventListener(() => {
+            if(this.isAnimationInProgress){return;}
+            this.playCard(card);
+        });
         card.addHoverEventListener(() => {this.zoomCard(card);}, () => {this.hideZoomedCard();});
         this.hideZoomedCard();
     }
@@ -178,6 +185,9 @@ class Game{
     }
 
     setCardStyle(card, cardsNumber, index, divWidth, cardsPosition, delay){
+
+
+        this.isAnimationInProgress = true;
 
         const cardWidth = 80;
         let x = (divWidth - cardsNumber*cardWidth/2)/2 + index * 30;
@@ -198,6 +208,8 @@ class Game{
             card.domElement.style.left = x + "px";
             card.domElement.style.top = cardsPosition + "px";
             card.domElement.style.transform = `scale(1,1) rotate(${rotationDeg}deg)`;
+
+            setTimeout(() => {this.isAnimationInProgress = false;}, 1500);
         }, animationDelay);
     }
 
@@ -219,14 +231,15 @@ class Game{
         }
 
         if(!this.isAIPlayer(this.currentPlayer)){
+            this.isAnimationInProgress = true;
             cardElement.domElement.style.top = "0";
             cardElement.domElement.style.opacity = "0";
             cardElement.domElement.style.transform = "none";
             cardElement.domElement.style.transition = "all 0.6s ease-in";
             setTimeout(() => {this.playSelectedCard(card)}, 1000);
+            setTimeout(() => {this.isAnimationInProgress = false;}, 1100);
 
         }else{
-
             this.playSelectedCard(card);
         }
     }
@@ -304,35 +317,55 @@ class Game{
 
     addEventListenerForPlayedCardOnBoard(player, card){
         if(this.isAIPlayer(player)){
-            card.addClickEventListener(() => { this.attackAICard(card);});
+            card.addClickEventListener(() => {
+                if(this.isAnimationInProgress){return;}
+                this.attackAICard(card);
+            });
         }else {
-            card.addClickEventListener(() => { this.setAttackingCard(card);});
+            card.addClickEventListener(() => {
+                debugger;
+                if(this.isAnimationInProgress){return;}
+                this.setAttackingCard(card);
+            });
         }
     }
 
     setAttackingCard(card){
+        debugger;
+
+        if(this.attackingCard !== null && this.attackingCard === card){
+            this.attackingCard.domElement.style.filter = "none";
+            this.attackingCard = null;
+            return;
+        }
+
         if(this.attackingCard !== null) {
             this.attackingCard.domElement.style.filter = "none";
         }
 
         this.attackingCard = card;
+
         if(this.player.inactiveCards.indexOf(card.cardData) === -1) {
             if(this.player.attackedThisTurn.indexOf(card.cardData) === -1) {
                 this.attackingCard.domElement.style.filter = "brightness(150%)";
             }else{
-                alert("Card already attacked this turn!");
+                alert("This minion already attacked this turn!");
+                this.attackingCard = null;
             }
         }else{
-            alert("Can attack only next turn!");
+            alert("This minion can attack only next turn!");
+            this.attackingCard = null;
         }
     }
 
     endTurn(){
         if(this.isAIPlayer(this.currentPlayer)){
             this.currentPlayer = this.player;
+            this.domElement.querySelector(".turn-button").removeAttribute("disabled");
             this.resetTurnButton("player", "End Turn");
         }else{
             this.currentPlayer = this.AI;
+            this.domElement.querySelector(".turn-button").disabled = true;
             this.resetTurnButton("enemy", "Enemy Turn");
         }
 
@@ -340,10 +373,15 @@ class Game{
     }
 
     playTurn(){
+        this.isAnimationInProgress = true;
         setTimeout(() => {
             this.resetPossibleMoves();
 
             this.currentPlayer.resetInactiveCards();
+
+            if(!this.isAIPlayer(this.currentPlayer)){
+                this.notPlayableCardsOnBoard = [];
+            }
 
             this.currentPlayer.initializeManaForNewTurn();
             this.updateManaOnScreen();
@@ -368,6 +406,7 @@ class Game{
                 this.highlightPossibleMoves();
             }
         }, 1500);
+        setTimeout(() => {this.isAnimationInProgress = false;}, 1500);
     }
 
     isDeckEmpty(){
@@ -393,6 +432,8 @@ class Game{
 
     attackPlayerHero(cardData){
 
+        this.isAnimationInProgress = true;
+
         let card = this.AICardsOnBoard.find( x => x.cardData === cardData);
         let index = this.findIndexInArray(this.AI.cardsOnBoard, cardData);
 
@@ -400,11 +441,11 @@ class Game{
         card.domElement.style.top = "300px";
         card.domElement.style.left = `${(952-100)/2}px`;
         card.domElement.style.zIndex = "1";
-        card.domElement.style.transition = "all 1s ease";
+        card.domElement.style.transition = "all 0.7s ease";
 
         setTimeout(() => {
             this.domElement.querySelector(".player-hero").style.boxShadow = "inset 0px 0px 160px -5px #E30303";
-        }, 500);
+        }, 350);
 
         setTimeout(() => {
             this.domElement.querySelector(".player-hero").style.boxShadow = "none";
@@ -415,30 +456,39 @@ class Game{
 
             setTimeout(() => {
                 this.damageOpponent(cardData, this.AI);
-            }, 1000);
-        }, 1000);
+            }, 700);
+        }, 700);
+
+        setTimeout(() => {this.isAnimationInProgress = false;}, 1500);
     }
 
     playAIRole(){
-        this.currentPlayer.cardsOnBoard.forEach( (x, index) => setTimeout( () => {
-            this.attackPlayerHero(x);
-            if(index === this.currentPlayer.cardsOnBoard.length - 1){
-                this.endTurn();
-            }
-        }, 2000));
-
+        this.isAnimationInProgress = true;
         setTimeout(() => {
-            let playableCards = [];
-            do{
-                playableCards = this.getPlayableCards();
+            let delay = this.AI.cardsOnBoard.length * 2000 + 100;
+            this.AI.cardsOnBoard.forEach( (x, index) => setTimeout( () => {
+                this.attackPlayerHero(x);
+            }, 1400 * index));
 
-                if (playableCards.length !== 0){
-                    let cardToBePlayed = this.getCardWithMaximumDamage(playableCards);
-                    this.playCard(cardToBePlayed);
-                }
+            setTimeout(() => {
+                let playableCards = [];
+                do{
+                    playableCards = this.getPlayableCards();
 
-            }while(playableCards.length !== 0 && !this.isBoardFull());
-        }, 1000);
+                    if (playableCards.length !== 0){
+                        let cardToBePlayed = this.getCardWithMaximumDamage(playableCards);
+                        this.playCard(cardToBePlayed);
+                    }
+
+                }while(playableCards.length !== 0 && !this.isBoardFull());
+
+                setTimeout(() => {
+                    this.endTurn();
+                    this.isAnimationInProgress = false;
+                }, 1000);
+
+            },delay);
+        }, 1700);
     }
 
     damageOpponent(card, player){
@@ -495,17 +545,19 @@ class Game{
     }
 
     attackAIHero(card){
+        this.isAnimationInProgress = true;
+
         let index = this.findIndexInArray(this.player.cardsOnBoard, card.cardData);
 
         card.domElement.style.position = "absolute";
         card.domElement.style.top = "-300px";
         card.domElement.style.left = `${(952-100)/2}px`;
         card.domElement.style.zIndex = "1";
-        card.domElement.style.transition = "all 1s ease";
+        card.domElement.style.transition = "all 0.7s ease";
 
         setTimeout(() => {
             this.domElement.querySelector(".enemy-hero").style.boxShadow = "inset 0px 0px 160px -5px #E30303";
-        }, 500);
+        }, 350);
 
         setTimeout(() => {
 
@@ -531,9 +583,12 @@ class Game{
                 this.attackingCard = null;
                 this.player.addAlreadyAttackedThisTurnCard(card);
 
+
+                setTimeout(() => {this.isAnimationInProgress = false;}, 100);
+
                 this.highlightPossibleMoves();
-            }, 1000);
-        }, 800);
+            }, 700);
+        }, 600);
     }
 
     getAttackDirection(targetIndex, attackIndex){
@@ -544,6 +599,8 @@ class Game{
     }
 
     attackAICard(targetCard){
+        this.isAnimationInProgress = true;
+
         let targetCardIndex = this.findIndexInArray(this.AI.cardsOnBoard, targetCard.cardData);
         let attackingCardIndex = this.findIndexInArray(this.player.cardsOnBoard, this.attackingCard.cardData);
 
@@ -551,7 +608,7 @@ class Game{
         this.attackingCard.domElement.style.top = "-130px";
         this.attackingCard.domElement.style.left = `${(952 - 100 * this.AI.cardsOnBoard.length)/2 + 100* targetCardIndex}px`;
         this.attackingCard.domElement.style.zIndex = "2";
-        this.attackingCard.domElement.style.transition = "all 1s ease";
+        this.attackingCard.domElement.style.transition = "all 0.7s ease";
 
         targetCard.domElement.style.zIndex = "1";
 
@@ -571,7 +628,7 @@ class Game{
             targetCard.domElement.style.left = `${(952 - 100 * this.AI.cardsOnBoard.length)/2 + 100 * targetCardIndex + targetMovementTrajectory}px`;
             targetCard.domElement.style.boxShadow = "inset 0px 0px 65px 8px #E30303";
             targetCard.domElement.style.transition = "all 0.4s ease-in-out";
-        }, 500);
+        }, 350);
 
 
         setTimeout(() => {
@@ -623,10 +680,11 @@ class Game{
                     this.attackingCard.domElement.style.zIndex = "1";
                     this.attackingCard = null;
 
+                    setTimeout(() => {this.isAnimationInProgress = false;}, 100);
                     this.highlightPossibleMoves();
-                }, 1000);
-            }, 1000);
-        }, 800);
+                }, 700);
+            }, 700);
+        }, 600);
     }
 
     dieCardAnimation(card){
@@ -641,21 +699,27 @@ class Game{
 
     endGame(){
         this.displayWinner();
-        this.removeEventListenersFromPage();
     }
 
     displayWinner(){
-        if(this.player.health <= 0){
-            alert("AI won!");
-        }else{
-            alert(`${this.player.name} won!`);
-        }
+        let winnerName = (this.AI.health <= 0) ? this.player.name : "Computer AI";
+
+        const div = document.createElement("div");
+        div.className = "winner-div";
+        div.innerHTML = `<div style="text-align: center; width: 100%">
+                            <div class="winner-name">${winnerName} won!</div>
+                            <button class="play-again">Play again!</button>
+                          </div>`;
+        this.domElement.appendChild(div);
+
+        div.querySelector(".play-again").addEventListener("click", () => {
+            document.querySelector(".winner-div").style.display = "none";
+            document.querySelector(".winner-div").style.innerHTML = "";
+            this.domElement.innerHTML = "";
+            this.initialize();
+        }, false);
     }
 
-    removeEventListenersFromPage(){
-        let clone = this.domElement.cloneNode(true);
-        this.domElement.parentNode.replaceChild(clone, this.domElement);
-    }
 
     zoomCard(card){
         let zoomDiv = this.domElement.querySelector(".zoomed-card");
