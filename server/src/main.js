@@ -35,6 +35,10 @@ const CardCollection = require("./routes/card-collection/CardCollectionRoute");
 const cardCollection = new CardCollection(app);
 cardCollection.initialize();
 
+const GenerateDeckRoute = require("./routes/play-game/GenerateDeckRoute");
+const generateDeckRoute = new GenerateDeckRoute(app);
+generateDeckRoute.initialize();
+
 const GetDeckRoute = require("./routes/view-deck/GetDeckRoute");
 const getDeckRoute = new GetDeckRoute(app);
 getDeckRoute.initialize();

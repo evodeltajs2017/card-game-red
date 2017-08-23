@@ -18,4 +18,15 @@ class Card{
 
         this.domElement.querySelector(".fa").className += ` ${this.cardData.ImageIdentifier} fa-2x`;
     }
+
+    addClickEventListener(callback){
+        this.domElement.addEventListener("click",(e) => {
+            callback();
+        }, false);
+    }
+
+    addHoverEventListener(callbackMouseOver, callbackMouseOut){
+        this.domElement.addEventListener("mouseover",() => { callbackMouseOver(); }, false);
+        this.domElement.addEventListener("mouseout",() => { callbackMouseOut(); }, false);
+    }
 }
