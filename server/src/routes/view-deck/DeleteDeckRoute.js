@@ -12,9 +12,11 @@ class DeleteDeckRoute {
 	deleteDeckFromDatabase() {
 		this.app.delete("/deck/:id", (req, res) => {
 			let deckId = req.params.id;
-			new sql.Request().query(`delete from [dbo].[Deck] where [Id] = ${deckId}`, (err, result) => {
-				res.json({
-					isDeck: result.rowsAffected[0]
+			new sql.Request().query(`delete from [dbo].[DeckCard] where [DeckId] = ${deckId}`, (err, result) => {
+				new sql.Request().query(`delete from [dbo].[Deck] where [Id] = ${deckId}`, (err, result) => {
+					res.json({
+						isDeck: result.rowsAffected[0]
+					});
 				});
 			});
 		});

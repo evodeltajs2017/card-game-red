@@ -35,6 +35,10 @@ const CardCollection = require("./routes/card-collection/CardCollectionRoute");
 const cardCollection = new CardCollection(app);
 cardCollection.initialize();
 
+const GenerateDeckRoute = require("./routes/play-game/GenerateDeckRoute");
+const generateDeckRoute = new GenerateDeckRoute(app);
+generateDeckRoute.initialize();
+
 const GetDeckRoute = require("./routes/view-deck/GetDeckRoute");
 const getDeckRoute = new GetDeckRoute(app);
 getDeckRoute.initialize();
@@ -46,6 +50,18 @@ deleteDeckRoute.initialize();
 const EditDeckRoute = require("./routes/view-deck/EditDeckRoute");
 const editDeckRoute = new EditDeckRoute(app);
 editDeckRoute.initialize();
+
+const GetAllCardsForDeckRoute = require("./routes/view-deck/GetAllCardsForDeckRoute");
+const getAllCardsForDeckRoute = new GetAllCardsForDeckRoute(app);
+getAllCardsForDeckRoute.initialize();
+
+const GetCardsRoute = require("./routes/add-deck/GetCardsRoute");
+const getCardsRoute = new GetCardsRoute(app);
+getCardsRoute.initialize();
+
+const AddDeckRoute = require("./routes/add-deck/AddDeckRoute");
+const addDeckRoute = new AddDeckRoute(app);
+addDeckRoute.initialize();
 
 const DBConnection = require("./database-connection/DBConnection");
 const dbConnection = new DBConnection();

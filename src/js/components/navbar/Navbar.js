@@ -9,7 +9,8 @@ class Navbar {
 			{ name: "View card types", url: "/card-types" },
 			{ name: "Open card packs", url: "/open-packs" },
 			{ name: "View card collection", url: "/card-collection" },
-			{ name: "View decks", url: "/view-decks" }
+			{ name: "View decks", url: "/view-decks" },
+			{ name: "Add deck", url: "/add-deck" }
 		];
 	}
 

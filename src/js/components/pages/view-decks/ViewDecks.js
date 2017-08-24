@@ -1,7 +1,8 @@
 class ViewDecks {
 
-	constructor(container) {
+	constructor(container, router) {
 		this.container = container;
+		this.router = router;
 		this.grid = undefined;
 	}
 
@@ -33,23 +34,7 @@ class ViewDecks {
 
 	editDeck(i) {
 		let deckId = document.querySelector(`.grid-container .edit${i}`).getAttribute("data-internalid");
-		let name = prompt(`Change the name of the deck with id ${deckId}.`, "");
-		if (name != null  && name !== "") {
-			const deckRepository = new DeckRepository();
-			const promise = deckRepository.editDeck(deckId, name);
-			promise.then((data) => {
-				if (data.isDeck == 1) {
-					alert(`Name succesfully changed to ${name}.`);
-				} else {
-					alert("Name was not changed.");
-				}
-				this.grid.generateGrid();
-			}).catch((reason) => {
-				console.log("Error", reason.statusText);
-			});
-		} else {
-			alert("Name cannot be empty.");
-		}
+		this.router.go("/add-deck", false, {deckId});
 	}
 
 	deleteDeck(i) {
