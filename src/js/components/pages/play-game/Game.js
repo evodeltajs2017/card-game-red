@@ -610,6 +610,10 @@ class Game{
     }
 
     attackAICard(targetCard){
+        if(this.attackingCard === null){
+            return;
+        }
+
         this.isAnimationInProgress = true;
 
         let targetCardIndex = this.findIndexInArray(this.AI.cardsOnBoard, targetCard.cardData);
@@ -754,8 +758,8 @@ class Game{
 
     destroy(){
         this.domElement.innerHTML = `<div style="font-size: 25px; margin-top: 100px; color: white">
-                                        The decks are empty because you do not own any cards! <br> Cannot start the game. 
-                                        <br><br><br> What are you waiting for? 
+                                        The decks are empty because you do not own any cards! <br> Cannot start the game.
+                                        <br><br><br> What are you waiting for?
                                         <div style="color: darkorange; font-size: 40px">Go open some card packs!</div>
                                      </div>`;
     }

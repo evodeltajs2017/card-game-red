@@ -6,7 +6,7 @@ class CardTypes {
 	}
 
 	initialize() {
-		this.grid = new Grid(this.container, `View decks`, `http://localhost:3000/view-card-types`,
+		this.grid = new Grid(this.container, `View card types`, `http://localhost:3000/view-card-types`,
 			[{
 				fieldName: "id",
 				displayName: "ID",
