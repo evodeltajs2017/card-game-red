@@ -117,10 +117,3 @@ body {
     position: absolute;
     font-size: 35px;
 }
-
-.separator {
-    width: 100%;
-    height: 10px;
-    background-color: #dd0033;
-    float: left;
-}
