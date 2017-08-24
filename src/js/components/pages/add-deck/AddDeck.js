@@ -157,13 +157,16 @@ class AddDeck {
 						cardIds.push(document.querySelector(`.add-deck-container .draggable${i}`).getAttribute("data-id"));
 					}
 				}
-				let promise = deckRepository.addDeck(
-					this.getInputName().value,
-					cardIds
-				);
+				let promise = undefined;
+
 				if (this.isEdit) {
 					promise = deckRepository.editDeck(
 						this.router.getOptions().deckId,
+						this.getInputName().value,
+						cardIds
+					);
+				} else {
+					promise = deckRepository.addDeck(
 						this.getInputName().value,
 						cardIds
 					);
