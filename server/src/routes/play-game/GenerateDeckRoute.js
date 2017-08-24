@@ -14,6 +14,11 @@ class GenerateDeckRoute {
                 "[dbo].[CardType].Health, [dbo].[CardType].ImageIdentifier " +
                 "from [dbo].[Card] inner join [dbo].[CardType] on [dbo].[Card].CardTypeId = [dbo].[CardType].Id", (err, result) => {
                     cards = result.recordset;
+                    if (cards === undefined || cards.length === 0){
+                        cards = [];
+                        res.json(cards);
+                        return;
+                    }
                     deck = this.generateRandomDeck(cards);
                     res.json(deck);
             });
