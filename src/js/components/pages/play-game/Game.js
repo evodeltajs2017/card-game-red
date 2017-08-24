@@ -219,7 +219,7 @@ class Game{
 
     playCard(card){
 
-        this.hideZoomedCard();  
+        this.hideZoomedCard();
 
         let cardElement = card;
 
@@ -368,7 +368,6 @@ class Game{
     endTurn(){
         if(this.isAIPlayer(this.currentPlayer)){
             this.currentPlayer = this.player;
-            this.domElement.querySelector(".turn-button").removeAttribute("disabled");
             this.resetTurnButton("player", "End Turn");
         }else{
             this.currentPlayer = this.AI;
@@ -413,7 +412,12 @@ class Game{
                 this.highlightPossibleMoves();
             }
         }, 1500);
-        setTimeout(() => {this.isAnimationInProgress = false;}, 1500);
+        setTimeout(() => {
+            this.isAnimationInProgress = false;
+            if(!this.isAIPlayer(this.currentPlayer)){
+                this.domElement.querySelector(".turn-button").removeAttribute("disabled");
+            }
+        }, 3000);
     }
 
     isDeckEmpty(){

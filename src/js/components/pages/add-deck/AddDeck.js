@@ -12,18 +12,18 @@ class AddDeck {
 	initialize() {
 		const divMain = document.createElement("div");
 		let header = "Create deck";
-		let buttons = `<button title="Minimum 30 cards required" class="saveButton" disabled="true">Save</button>`;
+		let buttons = `<button title="10 cards required" class="saveButton" disabled="true">Save</button>`;
 		if (this.isEdit) {
 			header = "Edit deck";
 			buttons = `<button class="cancelButton">Cancel</button>
 				<button title="No changes made" class="saveButton" disabled="true">Save</button>`;
 		}
-		divMain.innerHTML = 
-			`<div class="add-deck-container" style="height:${0.77 * screen.height}px">
+		divMain.innerHTML =
+			`<div class="add-deck-container" style="height:${Math.floor(0.94 * screen.height)}px">
 				<div class="header">
 					<div class="title"><h1>${header}</h1></div>
 					<div class="buttons">${buttons}</div>
-				</div> 
+				</div>
 				<div class="content"></div>
 			</div>`;
 		this.container.appendChild(divMain);
@@ -115,12 +115,12 @@ class AddDeck {
 		availableCards.ondragover = (e) => {
 			e.preventDefault();
 			e.dataTransfer.dropEffect = "move";
-		} 
+		}
 		availableCards.ondrop = (e) => {
 			e.preventDefault();
 			if (this.draggedElement.getAttribute("data-position") == 1) {
 				this.countCardsInDeck--;
-				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (minimum 30)`);
+				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (10 required)`);
 				this.checkValidation();
 			}
 			this.draggedElement.setAttribute("data-position", 0);
@@ -132,12 +132,12 @@ class AddDeck {
 		choosedCards.ondragover = (e) => {
 			e.preventDefault();
 			e.dataTransfer.dropEffect = "move";
-		} 
+		}
 		choosedCards.ondrop = (e) => {
 			e.preventDefault();
 			if (this.draggedElement.getAttribute("data-position") == 0) {
 				this.countCardsInDeck++;
-				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (minimum 30)`);
+				this.getButtonSave().setAttribute("title", `${this.countCardsInDeck} current card(s) in deck (10 required)`);
 				this.checkValidation();
 			}
 			this.draggedElement.setAttribute("data-position", 1);
@@ -184,7 +184,7 @@ class AddDeck {
 	setEventListenerForName() {
 		this.getInputName().addEventListener("input", (e) => {
 			this.checkValidation();
-		}); 
+		});
 	}
 
 	setEventListenerForCancel() {
@@ -195,10 +195,10 @@ class AddDeck {
 
 	checkValidation() {
 		let checkName = this.getInputName().value != null && this.getInputName().value != "" && this.getInputName().value != undefined;
-		if (this.countCardsInDeck == 30 && checkName) {
+		if (this.countCardsInDeck == 10 && checkName) {
 			this.getButtonSave().disabled = false;
 			this.getButtonSave().setAttribute("title", ``);
-		} else if (this.countCardsInDeck == 30 && !checkName) {
+		} else if (this.countCardsInDeck == 10 && !checkName) {
 			this.getButtonSave().setAttribute("title", `Name field is empty`);
 			this.getButtonSave().disabled = true;
 		} else {
