@@ -17,10 +17,11 @@ class CardCollectionRoute {
 			let paramCheck = this.checkParams(req, res);
 
 			if (paramCheck.response == "200") {
-				new sql.Request().query(`select count(*) as number from [dbo].[CardType]${paramCheck.searchQuery}`, (err, result) => {
+				new sql.Request().query(`select count(*) as number FROM [dbo].[Card] inner join [CardType] on [Card].[CardTypeId]=[CardType].[Id]${paramCheck.searchQuery}`, (err, result) => {
 					let count = Math.ceil(result.recordset[0].number / increment);
 					if (count >= index) {
-						new sql.Request().query(`SELECT * FROM [dbo].[CardType]${paramCheck.searchQuery} ORDER BY [Id] DESC OFFSET ${index * increment} 
+						new sql.Request().query(`select [Card].[Id], [Card].[CardTypeId], [CardType].[Name], [CardType].[Cost], [CardType].[Damage], [CardType].[Health], [CardType].[ImageIdentifier] 
+												FROM [dbo].[Card] inner join [CardType] on [Card].[CardTypeId]=[CardType].[Id]${paramCheck.searchQuery} ORDER BY [Id] DESC OFFSET ${index * increment} 
 												ROWS FETCH NEXT ${increment} ROWS ONLY`,
 						(err, result) => {
 							if (err) {
@@ -41,7 +42,7 @@ class CardCollectionRoute {
 		let search = req.query.searchName;
 		let index = req.query.pageIndex;
 		let response = "200";
-		let searchQuery = ` where [Name] like '%${search}%'`;
+		let searchQuery = ` where [CardType].[Name] like '%${search}%'`;
 
 		if (index == "undefined" || index == "") {
 			res.status(400).send();
