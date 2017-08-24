@@ -218,6 +218,9 @@ class Game{
     }
 
     playCard(card){
+
+        this.hideZoomedCard();  
+
         let cardElement = card;
 
         if(!this.isAIPlayer(this.currentPlayer)){
